@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reflectie-app</title>
+<meta name="theme-color" content="#007a23">
+<meta name="description" content="Reflectievragen vanuit theoretische kaders">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Reflectie">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
 <style>
 :root{--groen:#007a23;--rood:#d64b37;--geel:#ec9801;--petrol:#2a7174;--blauw:#33a6c0;--beige:#e6e4d4;--grijs:#dad9d5;--wit:#f3f3f3;--ink:#23312a;--accent:var(--groen)}
@@ -13,9 +19,10 @@ background-image:radial-gradient(circle at 100% 0,rgba(51,166,192,.18) 0 140px,t
 h1,h2,h3{font-family:'Roboto Slab',Georgia,serif;font-weight:700;margin:0 0 .5em}
 h1{font-size:14pt}h2{font-size:14pt}h3{font-size:12pt}
 header{background:var(--accent);color:var(--wit);padding:14px 22px;display:flex;align-items:center;gap:14px;border-radius:0 0 28px 28px;box-shadow:0 6px 18px rgba(35,49,42,.15);max-width:900px;margin:0 auto}
-.back{flex:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(243,243,243,.22);color:var(--wit);display:grid;place-items:center;padding:0;cursor:pointer;transition:background .15s,transform .15s}
-.back:hover{background:rgba(243,243,243,.38);transform:translateY(-2px)}
-.sync{font-size:9.5pt;opacity:.85;white-space:nowrap}
+.back{flex:none;width:44px;height:44px;border:0;background:none;color:var(--wit);display:grid;place-items:center;padding:0;cursor:pointer;transition:transform .15s}
+.back:hover{transform:translateY(-2px)}
+.inst{flex:none;font:700 10pt Calibri,Carlito,sans-serif;color:var(--ink);background:var(--geel);border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
+.inst:hover{filter:brightness(1.08)}
 header h1{margin:0;flex:1;letter-spacing:.2px}
 header svg{width:40px;height:40px;flex:none}
 main{max-width:720px;margin:0 auto;padding:28px 16px 60px}
@@ -39,6 +46,11 @@ textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,122,35,.12
 .hist{background:var(--beige);border-radius:14px;padding:10px 16px;margin:8px 0;position:relative}
 .ht{white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
 .ht.open{display:block;-webkit-line-clamp:unset;line-clamp:unset}
+.qitem{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:#fff;border:1.5px solid rgba(35,49,42,.18);border-radius:16px;padding:12px 16px;margin:8px 0;cursor:pointer;transition:border-color .15s,transform .15s}
+.qitem:hover{border-color:var(--accent);transform:translateX(3px)}
+.qitem small{display:block;opacity:.7;font-weight:700;margin-top:4px}
+button.chip{border:0;font-family:inherit}
+.chip.link{cursor:pointer}.chip.link:hover{filter:brightness(1.12)}
 .more{background:none;border:0;padding:4px 0 0;margin:0;font:700 10pt Calibri,Carlito,sans-serif;color:var(--accent);cursor:pointer}
 .more:hover{text-decoration:underline}
 .hist::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:4px;background:var(--accent)}
@@ -53,10 +65,10 @@ textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,122,35,.12
 </head>
 <body>
 <header>
-<button class="back" id="backBtn" aria-label="Naar startpagina" title="Naar startpagina" style="display:none"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-6h4v6"/></svg></button>
+<button class="back" id="backBtn" aria-label="Naar startpagina" title="Naar startpagina" style="display:none"><svg viewBox="0 0 60 60" width="40" height="40" aria-hidden="true"><g fill="none" stroke="#f3f3f3" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M8 30 30 10l22 20"/><path d="M14 26v24h32V26"/></g></svg></button>
 <svg viewBox="0 0 60 60" aria-hidden="true"><g fill="none" stroke="#f3f3f3" stroke-width="3"><ellipse cx="30" cy="30" rx="26" ry="10"/><ellipse cx="30" cy="30" rx="26" ry="10" transform="rotate(60 30 30)"/><ellipse cx="30" cy="30" rx="26" ry="10" transform="rotate(120 30 30)"/></g><circle cx="30" cy="30" r="7" fill="#ec9801" stroke="#23312a" stroke-width="2"/></svg>
 <h1 id="kop">Reflectie-app</h1>
-<span class="sync" id="sync" aria-live="polite"></span>
+<button class="inst" id="installBtn" style="display:none">⬇ Installeer</button>
 </header>
 <main id="app"></main>
 
@@ -86,35 +98,37 @@ function pick(o,aliases){const keys=Object.keys(o);for(const a of aliases){const
 function parse(json){
  let rows=Array.isArray(json)?json:(json.data||json.rows||json.items||json.vragen||Object.values(json).find(Array.isArray)||[]);
  if(rows.length&&Array.isArray(rows[0])){const h=rows[0];rows=rows.slice(1).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]])))}
+ /* Kolom met 'verleden' / 'toekomst' (KwadrantDOQ) automatisch herkennen op basis van de waarden */
+ const cnt={};rows.forEach(o=>Object.keys(o).forEach(k=>{if(/^\s*(verleden|toekomst|heden)\s*$/i.test(String(o[k])))cnt[k]=(cnt[k]||0)+1}));
+ const tk=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
  return rows.map(o=>{
   let q=pick(o,['vraag','question','reflectie']);
   if(!q)q=Object.values(o).map(String).sort((a,b)=>b.length-a.length)[0]||'';
   const rc=pick(o,['categor','kwadrant','domein','thema']),rp=pick(o,['pijler','pilaar','pillar','dimensie','onderdeel']);
   /* Pijler staat nu eerst (bovenste niveau), categorie erna. Zet PIJLER_EERST op false om terug te wisselen. */
-  const top=PIJLER_EERST?rp:rc,sub=PIJLER_EERST?rc:rp;
+  const tv=tk?String(o[tk]).trim():'';
+  const top=tv||(PIJLER_EERST?rp:rc);
+  const sub=tv?(rc&&rc!==tv?rc:(rp&&rp!==tv?rp:'')):(PIJLER_EERST?rc:rp);
   return{q:q.trim(),cat:top||'Algemeen',pil:sub}
  }).filter(x=>x.q);
 }
 /* ====== data: 1x ophalen, daarna op de achtergrond synchroniseren ====== */
 const DATA={},P={};let lastSync=0;
-const setStatus=t=>{const e=$('#sync');if(e)e.textContent=t};
-(function(){FRAMEWORKS.forEach(fw=>{try{const c=JSON.parse(localStorage.getItem('reflectie_cache2_'+fw.id));if(c&&c.length)DATA[fw.id]=c}catch(e){}})})();
+(function(){FRAMEWORKS.forEach(fw=>{try{const c=JSON.parse(localStorage.getItem('reflectie_cache3_'+fw.id));if(c&&c.length)DATA[fw.id]=c}catch(e){}})})();
 function syncOne(fw){
  if(P[fw.id])return P[fw.id];
  return P[fw.id]=(async()=>{try{
   const r=await fetch(fw.url);if(!r.ok)throw new Error('http');
   const items=parse(await r.json());if(!items.length)throw new Error('leeg');
   DATA[fw.id]=items;
-  try{localStorage.setItem('reflectie_cache2_'+fw.id,JSON.stringify(items))}catch(e){}
+  try{localStorage.setItem('reflectie_cache3_'+fw.id,JSON.stringify(items))}catch(e){}
   if(S.fw===fw){S.items=items;if(S.cur)S.cur=items.find(i=>i.q===S.cur.q&&i.cat===S.cur.cat)||S.cur}
   return items;
  }finally{delete P[fw.id]}})();
 }
 async function syncAll(){
- setStatus('↻ Synchroniseren…');
  const res=await Promise.allSettled(FRAMEWORKS.map(syncOne));
- if(res.every(r=>r.status==='fulfilled')){lastSync=Date.now();setStatus('✓ Bijgewerkt '+new Date().toLocaleTimeString('nl-BE',{hour:'2-digit',minute:'2-digit'}))}
- else setStatus(Object.keys(DATA).length?'Offline – opgeslagen versie':'');
+ if(res.every(r=>r.status==='fulfilled'))lastSync=Date.now();
 }
 async function getData(fw){return DATA[fw.id]||await syncOne(fw)}
 /* ====== state ====== */
@@ -151,6 +165,7 @@ function render(){
  if(S.view==='question')return renderQuestion();
  if(S.view==='after')return renderAfter();
  if(S.view==='choose')return renderChoose();
+ if(S.view==='list')return renderList();
 }
 async function start(fw){
  S.fw=fw;setAccent(fw.kleur);if(!DATA[fw.id]){S.view='loading';render()}
@@ -167,7 +182,7 @@ function renderQuestion(){
  const q=S.cur,id=S.fw.id+'|'+q.q;
  const hist=load().filter(a=>a.id===id).sort((a,b)=>b.date.localeCompare(a.date));
  $('#app').innerHTML=`<div class="card big">
-  <span class="chip" style="background:${catColor(q.cat)}">${esc(q.cat)}</span>${q.pil?`<span class="chip" style="background:var(--ink)">${esc(q.pil)}</span>`:''}
+  <button class="chip link" id="chipC" title="Bekijk alle vragen" style="background:${catColor(q.cat)}">${esc(q.cat)}</button>${q.pil?`<button class="chip link" id="chipP" title="Bekijk alle vragen" style="background:var(--ink)">${esc(q.pil)}</button>`:''}
   <div class="vraag">${esc(q.q)}</div>
   <button class="btn geel" id="infoBtn">ⓘ Meer over ${esc(S.fw.naam)}</button>
   ${S.showInfo?`<div class="info"><h3>${esc(S.fw.naam)}</h3>${esc(S.fw.info)}</div>`:''}
@@ -184,6 +199,8 @@ function renderQuestion(){
   b.onclick=()=>{const o=t.classList.toggle('open');b.textContent=o?'Toon minder ▴':'Toon meer ▾'};
   t.after(b);
  });
+ $('#chipC').onclick=()=>openList(q.cat,null);
+ if($('#chipP'))$('#chipP').onclick=()=>openList(q.cat,q.pil);
  $('#infoBtn').onclick=()=>{const t=$('#ans').value;S.showInfo=!S.showInfo;renderQuestion();$('#ans').value=t};
  $('#skipBtn').onclick=()=>{S.view='after';S.saved=false;nav()};
  $('#saveBtn').onclick=()=>{
@@ -206,22 +223,58 @@ function renderAfter(){
  $('#chs').onclick=()=>{S.view='choose';S.pickCat=null;nav()};
  if($('#all'))$('#all').onclick=()=>{S.filter={cat:null,pil:null};renderAfter()};
 }
+function openList(cat,pil){S.filter={cat,pil:pil||null};S.view='list';nav()}
 function renderChoose(){
  const cats=[...new Set(S.items.map(i=>i.cat))];
- if(!S.pickCat){
-  $('#app').innerHTML=`<div class="card big"><h2>Kies een pijler</h2><div class="pick">${cats.map(c=>`<button class="btn" style="background:${catColor(c)}" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>`;
-  document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{
-   const c=b.dataset.c,pils=[...new Set(S.items.filter(i=>i.cat===c&&i.pil).map(i=>i.pil))];
-   if(!pils.length){S.filter={cat:c,pil:null};randomQ()}else{S.pickCat=c;nav()}});
-  return;
- }
- const pils=[...new Set(S.items.filter(i=>i.cat===S.pickCat&&i.pil).map(i=>i.pil))];
- $('#app').innerHTML=`<div class="card big"><span class="chip" style="background:${catColor(S.pickCat)}">${esc(S.pickCat)}</span><h2>Kies een categorie</h2>
- <div class="pick"><button class="btn geel" id="allP">Alle categorieën</button>${pils.map(p=>`<button class="btn" style="background:${catColor(S.pickCat)}" data-p="${esc(p)}">${esc(p)}</button>`).join('')}</div>
- </div>`;
- $('#allP').onclick=()=>{S.filter={cat:S.pickCat,pil:null};randomQ()};
- document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{S.filter={cat:S.pickCat,pil:b.dataset.p};randomQ()});
+ $('#app').innerHTML=`<div class="card big"><h2>Kies een pijler</h2><p class="muted">Je ziet daarna alle vragen van je keuze.</p><div class="pick">${cats.map(c=>`<button class="btn" style="background:${catColor(c)}" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>`;
+ document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>openList(b.dataset.c,null));
 }
+function renderList(){
+ const f=S.filter,items=pool(),all=load();
+ const subs=f.pil?[]:[...new Set(items.filter(i=>i.pil).map(i=>i.pil))];
+ const info=i=>{const a=all.filter(x=>x.id===S.fw.id+'|'+i.q).sort((x,y)=>y.date.localeCompare(x.date));
+  return a.length?`✓ ${a.length}× beantwoord · laatst ${new Date(a[0].date).toLocaleDateString('nl-BE')}`:'Nog niet beantwoord'};
+ $('#app').innerHTML=`<div class="card big">
+  <button class="chip link" id="lc" style="background:${catColor(f.cat)}">${esc(f.cat)}</button>${f.pil?`<span class="chip" style="background:var(--ink)">${esc(f.pil)}</span>`:''}
+  <h2>${items.length} ${items.length===1?'vraag':'vragen'}</h2>
+  <button class="btn geel" id="lr">🎲 Random vraag hieruit</button>
+  ${subs.length?`<h3 style="margin-top:14px">Verfijn per categorie</h3><div class="pick">${subs.map(p=>`<button class="btn" style="background:${catColor(f.cat)}" data-p="${esc(p)}">${esc(p)}</button>`).join('')}</div>`:''}
+ </div>
+ <div>${items.map((i,n)=>`<button class="qitem" data-n="${n}">${esc(i.q)}<small>${!f.pil&&i.pil?esc(i.pil)+' · ':''}${info(i)}</small></button>`).join('')}</div>`;
+ $('#lc').onclick=()=>{if(f.pil)openList(f.cat,null)};
+ $('#lr').onclick=randomQ;
+ document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>openList(f.cat,b.dataset.p));
+ document.querySelectorAll('.qitem').forEach(b=>b.onclick=()=>{S.cur=items[+b.dataset.n];S.showInfo=false;S.view='question';nav()});
+}
+/* ====== PWA: manifest + iconen worden hier gegenereerd (alles in 1 bestand) ====== */
+function drawIcon(size,maskable){
+ const c=document.createElement('canvas');c.width=c.height=size;const x=c.getContext('2d'),m=size/2,k=maskable?.78:1;
+ x.fillStyle='#007a23';
+ if(maskable)x.fillRect(0,0,size,size);else{const r=size*.22;x.beginPath();x.roundRect?x.roundRect(0,0,size,size,r):x.rect(0,0,size,size);x.fill()}
+ x.strokeStyle='#f3f3f3';x.lineWidth=size*.045*k;
+ [0,60,120].forEach(a=>{x.beginPath();x.ellipse(m,m,size*.34*k,size*.13*k,a*Math.PI/180,0,Math.PI*2);x.stroke()});
+ x.beginPath();x.arc(m,m,size*.1*k,0,Math.PI*2);x.fillStyle='#ec9801';x.fill();x.lineWidth=size*.025*k;x.strokeStyle='#23312a';x.stroke();
+ return c.toDataURL('image/png');
+}
+(function(){
+ try{
+  const i192=drawIcon(192),i512=drawIcon(512),iMask=drawIcon(512,true);
+  const a=document.createElement('link');a.rel='apple-touch-icon';a.href=drawIcon(180,true);document.head.appendChild(a);
+  const f=document.createElement('link');f.rel='icon';f.href=i192;document.head.appendChild(f);
+  const base=location.href.split('#')[0].split('?')[0];
+  const man={name:'Reflectie-app',short_name:'Reflectie',description:'Reflectievragen vanuit theoretische kaders',
+   start_url:base,scope:new URL('./',base).href,display:'standalone',orientation:'any',lang:'nl',
+   background_color:'#e6e4d4',theme_color:'#007a23',
+   icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any'},{src:iMask,sizes:'512x512',type:'image/png',purpose:'maskable'}]};
+  const l=document.createElement('link');l.rel='manifest';
+  l.href=URL.createObjectURL(new Blob([JSON.stringify(man)],{type:'application/manifest+json'}));document.head.appendChild(l);
+ }catch(e){}
+ if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
+ let dp=null;const ib=$('#installBtn');
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;ib.style.display=''});
+ ib.onclick=async()=>{if(!dp)return;dp.prompt();await dp.userChoice;dp=null;ib.style.display='none'};
+ window.addEventListener('appinstalled',()=>{dp=null;ib.style.display='none'});
+})();
 render();
 syncAll();
 setInterval(syncAll,10*60*1000);
