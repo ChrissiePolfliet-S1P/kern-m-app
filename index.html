@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflectie-app</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--groen:#007a23;--rood:#d64b37;--geel:#ec9801;--petrol:#2a7174;--blauw:#33a6c0;--beige:#e6e4d4;--grijs:#dad9d5;--wit:#f3f3f3;--ink:#23312a;--accent:var(--groen)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--beige);color:var(--ink);font:11pt Calibri,Carlito,'Segoe UI',sans-serif;min-height:100vh;line-height:1.5;
+background-image:radial-gradient(circle at 100% 0,rgba(51,166,192,.18) 0 140px,transparent 141px),radial-gradient(circle at 0 100%,rgba(236,152,1,.16) 0 120px,transparent 121px);background-attachment:fixed}
+h1,h2,h3{font-family:'Roboto Slab',Georgia,serif;font-weight:700;margin:0 0 .5em}
+h1{font-size:14pt}h2{font-size:14pt}h3{font-size:12pt}
+header{background:var(--accent);color:var(--wit);padding:14px 22px;display:flex;align-items:center;gap:14px;border-radius:0 0 28px 28px;box-shadow:0 6px 18px rgba(35,49,42,.15);max-width:900px;margin:0 auto}
+.back{flex:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(243,243,243,.22);color:var(--wit);display:grid;place-items:center;padding:0;cursor:pointer;transition:background .15s,transform .15s}
+.back:hover{background:rgba(243,243,243,.38);transform:translateY(-2px)}
+.sync{font-size:9.5pt;opacity:.85;white-space:nowrap}
+header h1{margin:0;flex:1;letter-spacing:.2px}
+header svg{width:40px;height:40px;flex:none}
+main{max-width:720px;margin:0 auto;padding:28px 16px 60px}
+.card{background:var(--wit);border:1.5px solid rgba(35,49,42,.18);border-radius:24px;box-shadow:0 8px 24px rgba(35,49,42,.08);padding:24px;margin-bottom:18px;position:relative;overflow:hidden}
+.card.big::before{content:"";position:absolute;top:-34px;right:-34px;width:100px;height:100px;border-radius:50%;background:var(--accent);opacity:.14}
+.card.big::after{content:"";position:absolute;top:18px;right:18px;width:14px;height:14px;border-radius:50%;background:var(--geel)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.fw{display:flex;align-items:center;gap:18px;width:100%;cursor:pointer;text-align:left;font:inherit;color:var(--ink);margin:0;padding:18px 22px;transition:transform .15s,box-shadow .15s}
+.fw:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(35,49,42,.14)}
+.fw .badge{flex:none;width:64px;height:64px}
+.fw .txt{flex:1}.fw h2{margin:0 0 2px}.fw p{margin:0}
+.fw .go{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:16pt}
+button.btn{font:700 11pt Calibri,Carlito,sans-serif;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:10px 22px;cursor:pointer;margin:4px 8px 4px 0;transition:transform .12s,filter .12s}
+button.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button.btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px rgba(35,49,42,.3)}
+button.btn.geel{background:var(--geel);color:var(--ink)}
+.chip{display:inline-block;border-radius:999px;padding:2px 14px;font-size:10pt;font-weight:700;color:#fff;background:var(--petrol);margin:0 6px 8px 0}
+.vraag{font-family:'Roboto Slab',Georgia,serif;font-weight:700;font-size:14pt;line-height:1.4;margin:8px 0 18px;max-width:90%}
+textarea{width:100%;min-height:150px;font:11pt Calibri,Carlito,sans-serif;padding:14px;border:1.5px solid rgba(35,49,42,.25);border-radius:18px;background:#fff;resize:vertical;outline:none}
+textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,122,35,.12)}
+.hist{background:var(--beige);border-radius:14px;padding:10px 16px;margin:8px 0;position:relative}
+.ht{white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
+.ht.open{display:block;-webkit-line-clamp:unset;line-clamp:unset}
+.more{background:none;border:0;padding:4px 0 0;margin:0;font:700 10pt Calibri,Carlito,sans-serif;color:var(--accent);cursor:pointer}
+.more:hover{text-decoration:underline}
+.hist::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:4px;background:var(--accent)}
+.hist small{display:block;font-weight:700;opacity:.65;margin-bottom:3px}
+.info{background:var(--beige);border-radius:18px;padding:14px 18px;margin:14px 0}
+.pick{display:flex;flex-wrap:wrap;gap:4px}
+.err{color:var(--rood);font-weight:700}
+.card.err{border-color:var(--rood)}
+.muted{opacity:.7}
+.saved{color:var(--groen);font-weight:700;margin:0 0 10px}
+</style>
+</head>
+<body>
+<header>
+<button class="back" id="backBtn" aria-label="Naar startpagina" title="Naar startpagina" style="display:none"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-6h4v6"/></svg></button>
+<svg viewBox="0 0 60 60" aria-hidden="true"><g fill="none" stroke="#f3f3f3" stroke-width="3"><ellipse cx="30" cy="30" rx="26" ry="10"/><ellipse cx="30" cy="30" rx="26" ry="10" transform="rotate(60 30 30)"/><ellipse cx="30" cy="30" rx="26" ry="10" transform="rotate(120 30 30)"/></g><circle cx="30" cy="30" r="7" fill="#ec9801" stroke="#23312a" stroke-width="2"/></svg>
+<h1 id="kop">Reflectie-app</h1>
+<span class="sync" id="sync" aria-live="polite"></span>
+</header>
+<main id="app"></main>
+
+<script>
+/* ====== CONFIGURATIE: nieuwe kaders hier toevoegen ====== */
+const BASE='https://script.google.com/macros/s/AKfycbyvxvo2DIyjA2-FxITZtKdvy59e75ynRzoqtTbaVJsNi57y_jUGoFryFKwXrJ5H3SLCTQ/exec?tab=';
+const FRAMEWORKS=[
+ {id:'kwaliteitsatoom',naam:'Kwaliteitsatoom',url:BASE+'Kwaliteitsatoom',kleur:'#007a23',
+  kort:'Reflecteer vanuit de categorieën en pijlers van het kwaliteitsatoom.',
+  info:'Het kwaliteitsatoom is een model dat kwaliteit van hulp- en dienstverlening in kaart brengt aan de hand van categorieën en pijlers, die samen het atoom vormen. Gebruik het om te onderzoeken waar je sterk in bent en waar je nog kan groeien. (Vervang deze tekst door de officiële toelichting.)'},
+ {id:'kwadrantdoq',naam:'KwadrantDOQ',url:BASE+'KwadrantDOQ',kleur:'#2a7174',
+  kort:'Reflecteer vanuit de kwadranten van het DOQ-model.',
+  info:'KwadrantDOQ is een model dat je handelen onderverdeelt in kwadranten, zodat je bewust kan kijken naar de verschillende dimensies van je werk. (Vervang deze tekst door de officiële toelichting.)'}
+];
+const PALET=['#007a23','#d64b37','#ec9801','#2a7174','#33a6c0'];
+const KEY='reflectie_antwoorden_v1';
+const PIJLER_EERST=true;
+/* ====== opslag ====== */
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}};
+const save=a=>{try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){return false}};
+/* ====== helpers ====== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=iso=>new Date(iso).toLocaleString('nl-BE',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const norm=k=>String(k).toLowerCase().replace(/[^a-z]/g,'');
+function pick(o,aliases){const keys=Object.keys(o);for(const a of aliases){const k=keys.find(k=>norm(k).includes(a));if(k&&String(o[k]).trim())return String(o[k]).trim()}return''}
+function parse(json){
+ let rows=Array.isArray(json)?json:(json.data||json.rows||json.items||json.vragen||Object.values(json).find(Array.isArray)||[]);
+ if(rows.length&&Array.isArray(rows[0])){const h=rows[0];rows=rows.slice(1).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]])))}
+ return rows.map(o=>{
+  let q=pick(o,['vraag','question','reflectie']);
+  if(!q)q=Object.values(o).map(String).sort((a,b)=>b.length-a.length)[0]||'';
+  const rc=pick(o,['categor','kwadrant','domein','thema']),rp=pick(o,['pijler','pilaar','pillar','dimensie','onderdeel']);
+  /* Pijler staat nu eerst (bovenste niveau), categorie erna. Zet PIJLER_EERST op false om terug te wisselen. */
+  const top=PIJLER_EERST?rp:rc,sub=PIJLER_EERST?rc:rp;
+  return{q:q.trim(),cat:top||'Algemeen',pil:sub}
+ }).filter(x=>x.q);
+}
+/* ====== data: 1x ophalen, daarna op de achtergrond synchroniseren ====== */
+const DATA={},P={};let lastSync=0;
+const setStatus=t=>{const e=$('#sync');if(e)e.textContent=t};
+(function(){FRAMEWORKS.forEach(fw=>{try{const c=JSON.parse(localStorage.getItem('reflectie_cache2_'+fw.id));if(c&&c.length)DATA[fw.id]=c}catch(e){}})})();
+function syncOne(fw){
+ if(P[fw.id])return P[fw.id];
+ return P[fw.id]=(async()=>{try{
+  const r=await fetch(fw.url);if(!r.ok)throw new Error('http');
+  const items=parse(await r.json());if(!items.length)throw new Error('leeg');
+  DATA[fw.id]=items;
+  try{localStorage.setItem('reflectie_cache2_'+fw.id,JSON.stringify(items))}catch(e){}
+  if(S.fw===fw){S.items=items;if(S.cur)S.cur=items.find(i=>i.q===S.cur.q&&i.cat===S.cur.cat)||S.cur}
+  return items;
+ }finally{delete P[fw.id]}})();
+}
+async function syncAll(){
+ setStatus('↻ Synchroniseren…');
+ const res=await Promise.allSettled(FRAMEWORKS.map(syncOne));
+ if(res.every(r=>r.status==='fulfilled')){lastSync=Date.now();setStatus('✓ Bijgewerkt '+new Date().toLocaleTimeString('nl-BE',{hour:'2-digit',minute:'2-digit'}))}
+ else setStatus(Object.keys(DATA).length?'Offline – opgeslagen versie':'');
+}
+async function getData(fw){return DATA[fw.id]||await syncOne(fw)}
+/* ====== state ====== */
+let S={fw:null,items:[],cur:null,filter:{cat:null,pil:null},showInfo:false};
+function setAccent(c){document.documentElement.style.setProperty('--accent',c||'#007a23')}
+/* ====== navigatie (browsergeschiedenis) ====== */
+let depth=0;
+const snap=()=>({fw:S.fw&&S.fw.id,view:S.view,cur:S.cur?S.items.findIndex(i=>i.q===S.cur.q&&i.cat===S.cur.cat):-1,filter:S.filter,pickCat:S.pickCat||null,saved:!!S.saved});
+function nav(){depth++;history.pushState({...snap(),n:depth},'');render()}
+history.replaceState({view:'home',n:0},'');
+$('#backBtn').onclick=()=>{if(depth>0)history.go(-depth)};
+window.addEventListener('popstate',async e=>{
+ const st=e.state;depth=st?st.n:0;
+ if(!st||!st.fw){S={fw:null,items:[],cur:null,filter:{cat:null,pil:null},showInfo:false};setAccent();render();return}
+ const fw=FRAMEWORKS.find(f=>f.id===st.fw);
+ if(S.fw!==fw||!S.items.length){S.fw=fw;setAccent(fw.kleur);S.view='loading';render();
+  try{S.items=await getData(fw)}catch(x){S.view='error';render();return}}
+ S.fw=fw;setAccent(fw.kleur);S.filter=st.filter;S.pickCat=st.pickCat;S.saved=st.saved;S.view=st.view;
+ S.cur=S.items[st.cur]||pool()[0]||null;S.showInfo=false;render();
+});
+/* ====== schermen ====== */
+const badge=c=>`<svg class="badge" viewBox="0 0 64 64"><circle cx="32" cy="32" r="31" fill="${c}" opacity=".15"/><g fill="none" stroke="${c}" stroke-width="2.5"><ellipse cx="32" cy="32" rx="24" ry="9"/><ellipse cx="32" cy="32" rx="24" ry="9" transform="rotate(60 32 32)"/><ellipse cx="32" cy="32" rx="24" ry="9" transform="rotate(120 32 32)"/></g><circle cx="32" cy="32" r="6" fill="${c}"/></svg>`;
+function render(){
+ const app=$('#app');$('#backBtn').style.display=S.fw?'':'none';
+ $('#kop').textContent=S.fw?S.fw.naam:'Reflectie-app';
+ if(!S.fw){
+  app.innerHTML=`<div class="card big"><h2>Welkom! Kies een theoretisch kader</h2><p>Je krijgt een reflectievraag, schrijft je antwoord op en bewaart het op je eigen toestel.</p></div>
+  <div class="stack">${FRAMEWORKS.map(f=>`<button class="card fw" data-id="${f.id}">${badge(f.kleur)}<span class="txt"><h2 style="color:${f.kleur}">${esc(f.naam)}</h2><p>${esc(f.kort)}</p></span><span class="go" style="background:${f.kleur}">→</span></button>`).join('')}</div>`;
+  app.querySelectorAll('.fw').forEach(b=>b.onclick=()=>start(FRAMEWORKS.find(f=>f.id===b.dataset.id)));
+  return;
+ }
+ if(S.view==='loading'){app.innerHTML=`<div class="card"><h2>Vragen laden…</h2></div>`;return}
+ if(S.view==='error'){app.innerHTML=`<div class="card err"><h2>Kon de vragen niet laden</h2><p>Controleer je internetverbinding of de API-link.</p><button class="btn" id="retry">Opnieuw proberen</button></div>`;$('#retry').onclick=()=>start(S.fw);return}
+ if(S.view==='question')return renderQuestion();
+ if(S.view==='after')return renderAfter();
+ if(S.view==='choose')return renderChoose();
+}
+async function start(fw){
+ S.fw=fw;setAccent(fw.kleur);if(!DATA[fw.id]){S.view='loading';render()}
+ try{S.items=await getData(fw);S.filter={cat:null,pil:null};randomQ()}catch(e){S.view='error';render()}
+}
+function pool(){return S.items.filter(i=>(!S.filter.cat||i.cat===S.filter.cat)&&(!S.filter.pil||i.pil===S.filter.pil))}
+function randomQ(){
+ const p=pool();let c=p[Math.floor(Math.random()*p.length)];
+ if(p.length>1)while(c.q===(S.cur&&S.cur.q))c=p[Math.floor(Math.random()*p.length)];
+ S.cur=c;S.showInfo=false;S.view='question';nav();
+}
+function catColor(cat){const cats=[...new Set(S.items.map(i=>i.cat))];return PALET[cats.indexOf(cat)%PALET.length]}
+function renderQuestion(){
+ const q=S.cur,id=S.fw.id+'|'+q.q;
+ const hist=load().filter(a=>a.id===id).sort((a,b)=>b.date.localeCompare(a.date));
+ $('#app').innerHTML=`<div class="card big">
+  <span class="chip" style="background:${catColor(q.cat)}">${esc(q.cat)}</span>${q.pil?`<span class="chip" style="background:var(--ink)">${esc(q.pil)}</span>`:''}
+  <div class="vraag">${esc(q.q)}</div>
+  <button class="btn geel" id="infoBtn">ⓘ Meer over ${esc(S.fw.naam)}</button>
+  ${S.showInfo?`<div class="info"><h3>${esc(S.fw.naam)}</h3>${esc(S.fw.info)}</div>`:''}
+  ${hist.length?`<h3 style="margin-top:16px">Eerdere antwoorden</h3>${hist.map(h=>`<div class="hist"><small>${fmt(h.date)}</small><div class="ht">${esc(h.answer)}</div></div>`).join('')}`:''}
+  <h3 style="margin-top:16px">${hist.length?'Jouw nieuwe antwoord':'Jouw antwoord'}</h3>
+  <textarea id="ans" placeholder="Schrijf hier je reflectie…"></textarea>
+  <div id="msg"></div>
+  <button class="btn" id="saveBtn">Bewaar antwoord</button>
+  <button class="btn alt" id="skipBtn">Overslaan</button>
+ </div>`;
+ document.querySelectorAll('.ht').forEach(t=>{
+  if(t.scrollHeight<=t.clientHeight+1)return;
+  const b=document.createElement('button');b.className='more';b.textContent='Toon meer ▾';
+  b.onclick=()=>{const o=t.classList.toggle('open');b.textContent=o?'Toon minder ▴':'Toon meer ▾'};
+  t.after(b);
+ });
+ $('#infoBtn').onclick=()=>{const t=$('#ans').value;S.showInfo=!S.showInfo;renderQuestion();$('#ans').value=t};
+ $('#skipBtn').onclick=()=>{S.view='after';S.saved=false;nav()};
+ $('#saveBtn').onclick=()=>{
+  const v=$('#ans').value.trim();
+  if(!v){$('#msg').innerHTML='<p class="err">Schrijf eerst een antwoord.</p>';return}
+  const all=load();all.push({id,framework:S.fw.id,question:q.q,category:q.cat,pillar:q.pil,answer:v,date:new Date().toISOString()});
+  if(!save(all)){$('#msg').innerHTML='<p class="err">Opslaan is mislukt (opslag geblokkeerd of vol).</p>';return}
+  S.saved=true;S.view='after';nav();
+ };
+}
+function renderAfter(){
+ const sel=S.filter.cat?` uit <b>${esc(S.filter.cat)}${S.filter.pil?' › '+esc(S.filter.pil):''}</b>`:'';
+ $('#app').innerHTML=`<div class="card big">${S.saved?'<p class="saved">✔ Je antwoord is lokaal bewaard.</p>':''}
+ <h2>Hoe wil je verder?</h2>
+ <button class="btn" id="rnd">🎲 Nog een random vraag${S.filter.cat?' (zelfde selectie)':''}</button>
+ <button class="btn geel" id="chs">Zelf kiezen: pijler &amp; categorie</button>
+ ${S.filter.cat?`<button class="btn alt" id="all">Selectie wissen</button>`:''}
+ <p class="muted">${sel?'Huidige selectie'+sel:'Random uit alle vragen van '+esc(S.fw.naam)}</p></div>`;
+ $('#rnd').onclick=randomQ;
+ $('#chs').onclick=()=>{S.view='choose';S.pickCat=null;nav()};
+ if($('#all'))$('#all').onclick=()=>{S.filter={cat:null,pil:null};renderAfter()};
+}
+function renderChoose(){
+ const cats=[...new Set(S.items.map(i=>i.cat))];
+ if(!S.pickCat){
+  $('#app').innerHTML=`<div class="card big"><h2>Kies een pijler</h2><div class="pick">${cats.map(c=>`<button class="btn" style="background:${catColor(c)}" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>`;
+  document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{
+   const c=b.dataset.c,pils=[...new Set(S.items.filter(i=>i.cat===c&&i.pil).map(i=>i.pil))];
+   if(!pils.length){S.filter={cat:c,pil:null};randomQ()}else{S.pickCat=c;nav()}});
+  return;
+ }
+ const pils=[...new Set(S.items.filter(i=>i.cat===S.pickCat&&i.pil).map(i=>i.pil))];
+ $('#app').innerHTML=`<div class="card big"><span class="chip" style="background:${catColor(S.pickCat)}">${esc(S.pickCat)}</span><h2>Kies een categorie</h2>
+ <div class="pick"><button class="btn geel" id="allP">Alle categorieën</button>${pils.map(p=>`<button class="btn" style="background:${catColor(S.pickCat)}" data-p="${esc(p)}">${esc(p)}</button>`).join('')}</div>
+ </div>`;
+ $('#allP').onclick=()=>{S.filter={cat:S.pickCat,pil:null};randomQ()};
+ document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{S.filter={cat:S.pickCat,pil:b.dataset.p};randomQ()});
+}
+render();
+syncAll();
+setInterval(syncAll,10*60*1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-lastSync>5*60*1000)syncAll()});
+window.addEventListener('online',syncAll);
+</script>
+</body>
+</html>
