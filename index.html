@@ -128,13 +128,13 @@ header h1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 const BASE='https://script.google.com/macros/s/AKfycbyvxvo2DIyjA2-FxITZtKdvy59e75ynRzoqtTbaVJsNi57y_jUGoFryFKwXrJ5H3SLCTQ/exec?tab=';
 const FRAMEWORKS=[
  {id:'kwaliteitsatoom',naam:'Kwaliteitsatoom',url:BASE+'Kwaliteitsatoom',kleur:'#007a23',
-  kort:'Reflecteer vanuit de categorieën en pijlers van het kwaliteitsatoom.',
+  kort:'Reflecteer vanuit de categorieën en pijlers van ons gedeeld 1G1P referentiekader.',
   info:'Het kwaliteitsatoom is een model dat kwaliteit van hulp- en dienstverlening in kaart brengt aan de hand van categorieën en pijlers, die samen het atoom vormen. Gebruik het om te onderzoeken waar je sterk in bent en waar je nog kan groeien. (Vervang deze tekst door de officiële toelichting.)'},
  {id:'kwadrantdoq',naam:'KwadrantDOQ',url:BASE+'KwadrantDOQ',kleur:'#2a7174',
   kort:'Reflecteer vanuit de kwadranten van het DOQ-model.',
   info:'KwadrantDOQ is een model dat je handelen onderverdeelt in kwadranten, zodat je bewust kan kijken naar de verschillende dimensies van je werk. (Vervang deze tekst door de officiële toelichting.)'},
- {id:'tussentijds',naam:'Tussentijdse bespreking',kleur:'#a8412f',
-  kort:'Overzicht van de casebesprekingen in team: begin-, midden- en eindbespreking.',
+ {id:'tussentijds',naam:'Casusbesprekingen',kleur:'#a8412f',
+  kort:'Inhoud van tussentijdse casusbesprekingen in team: begin-, midden- en eindbespreking',
   pagina:{titel:'Tussentijdse casebesprekingen in team',secties:[
    {titel:'Beginbespreking',wanneer:'rond week 4',noot:'op eigen initiatief',items:[
     "[[Contact maken]]: kan je een werkbare samenwerkingsrelatie aangaan? Zie document 'doelen eerste gesprek'.",
@@ -248,7 +248,7 @@ function render(){
  const app=$('#app');$('#backBtn').style.display=S.fw?'':'none';$('#orgLogo').style.display=S.fw?'none':'';
  $('#kop').textContent=S.fw?S.fw.naam:'Kern•m•app';
  if(!S.fw){
-  app.innerHTML=`<div class="card big"><h2>Welkom! Kies een theoretisch kader</h2><p>Je krijgt een reflectievraag, schrijft je antwoord op en bewaart het op je eigen toestel.</p></div>
+  app.innerHTML=`<div class="card big"><h2>Welkom!</h2><p>Je kiest een kader en vindt er informatie, reflectievragen, ... Je antwoorden worden enkel op je eigen toestel opgeslagen.</p></div>
   <div class="stack">${FRAMEWORKS.map(f=>`<button class="card fw" data-id="${f.id}">${f.pagina?badgeInfo(f.kleur):badge(f.kleur)}<span class="txt"><h2 style="color:${f.kleur}">${esc(f.naam)}</h2><p>${esc(f.kort)}</p></span><span class="go" style="background:${f.kleur}">→</span></button>`).join('')}</div>`;
   app.querySelectorAll('.fw').forEach(b=>b.onclick=()=>start(FRAMEWORKS.find(f=>f.id===b.dataset.id)));
   return;
