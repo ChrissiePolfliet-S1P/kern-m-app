@@ -91,10 +91,14 @@ header h1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .undo .btn{margin:0}
 .star{background:none;border:0;padding:4px;cursor:pointer;line-height:0;border-radius:50%}
 .star:hover{background:rgba(236,152,1,.18)}
-.star.top{position:absolute;top:10px;right:38px;z-index:2}
-.qrow{display:flex;gap:6px;align-items:stretch;margin:8px 0}
-.qrow .qitem{flex:1;margin:0}
-.qrow .star{flex:none;background:#fff;border:1.5px solid rgba(35,49,42,.18);border-radius:16px;padding:0 12px;display:flex;align-items:center}
+.vraag .star{display:inline-block;vertical-align:middle;margin-left:2px}
+.qrow{position:relative;margin:8px 0;background:#fff;border:1.5px solid rgba(35,49,42,.18);border-radius:16px;transition:border-color .15s}
+.qrow:hover{border-color:var(--accent)}
+.qrow .qitem{margin:0;border:0;background:transparent;border-radius:16px;padding-right:52px}
+.qrow .qitem:hover{transform:none}
+.qrow .star{position:absolute;top:8px;right:8px}
+.qrow.off{background:var(--grijs)}.qrow.off:hover{border-color:rgba(35,49,42,.18)}
+.qrow .qitem.off{opacity:.65;background:transparent}
 #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;max-width:calc(100vw - 32px);text-align:center}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 .menu .xopt{background:var(--beige);margin:6px 0}.menu .xopt b{display:block}.menu .xopt small{opacity:.75}
@@ -257,7 +261,7 @@ Het gezin kan na het traject met vertrouwen verder, samen met de mensen die om h
     "Maak een taak in [[eCQare]] en bespreek opnieuw in team op het afgesproken moment."]}]}}
 ];
 const PALET=['#007a23','#d64b37','#ec9801','#2a7174','#33a6c0'];
-const KEY='reflectie_antwoorden_v1';
+const KEY='reflectie_antwoorden';
 const PIJLER_EERST=true;
 /* ====== opslag ====== */
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}};
@@ -374,7 +378,7 @@ async function start(fw){
  S.fromList=null;S.fw=fw;setAccent(fw.kleur);if(!DATA[fw.id]){S.view='loading';render()}
  try{S.items=await getData(fw);S.filter={cat:null,pil:null};randomQ()}catch(e){S.view='error';render()}
 }
-const HKEY='reflectie_verborgen_v1';
+const HKEY='reflectie_verborgen';
 const loadH=()=>{try{return JSON.parse(localStorage.getItem(HKEY))||[]}catch(e){return[]}};
 const saveH=a=>{try{localStorage.setItem(HKEY,JSON.stringify(a));return true}catch(e){return false}};
 const qid=i=>String(i.id);   /* het UUID uit de API is rechtstreeks de sleutel */
@@ -418,9 +422,9 @@ const subColor=sub=>specialColor(sub)||'var(--ink)';
 function renderQuestion(){
  const q=S.cur,id=qid(q);
  const hist=load().filter(a=>a.id===id).sort((a,b)=>b.date.localeCompare(a.date));
- $('#app').innerHTML=`<div class="card big">${starBtn(id,S.fw.id,true)}
+ $('#app').innerHTML=`<div class="card big">
   <button class="chip link" id="chipC" title="Bekijk alle vragen" style="background:${catColor(q.cat)}">${esc(q.cat)}</button>${q.pil?`<button class="chip link" id="chipP" title="Bekijk alle vragen" style="background:${subColor(q.pil)}">${esc(q.pil)}</button>`:''}
-  <div class="vraag">${esc(q.q)}</div>
+  <div class="vraag">${esc(q.q)} ${starBtn(id,S.fw.id)}</div>
   ${infoBlock(q.cat,q.pil)}
   ${hist.length?`<h3 style="margin-top:16px">Eerdere antwoorden</h3>${hist.map(h=>answerItem(h,{})).join('')}`:''}
   <h3 style="margin-top:16px">${hist.length?'Jouw nieuwe antwoord':'Jouw antwoord'}</h3>
@@ -511,8 +515,8 @@ function renderList(){
 /* ====== opslag beschermen, concepten en antwoorden aanpassen ====== */
 async function beschermOpslag(){try{if(navigator.storage&&navigator.storage.persist&&!(await navigator.storage.persisted()))await navigator.storage.persist()}catch(e){}}
 async function opslagStatus(){try{if(!(navigator.storage&&navigator.storage.persisted))return'';
- return (await navigator.storage.persisted())?'🔒 Opslag beschermd tegen automatisch opruimen.':'Opslag niet beschermd: de browser kan hem opruimen bij weinig ruimte. Maak regelmatig een back-up.'}catch(e){return''}}
-const DKEY='reflectie_concepten_v1';
+ return (await navigator.storage.persisted())?'🔒 Opslag beschermd tegen automatisch opruimen.':''}catch(e){return''}}
+const DKEY='reflectie_concepten';
 const loadD=()=>{try{return JSON.parse(localStorage.getItem(DKEY))||{}}catch(e){return{}}};
 function setDraft(id,t){try{const d=loadD();if(t&&t.trim())d[id]={t,d:new Date().toISOString()};else delete d[id];localStorage.setItem(DKEY,JSON.stringify(d))}catch(e){}}
 const akey=a=>a.id+'@@'+a.date;
@@ -561,7 +565,7 @@ function renderAnswers(){
 }
 function openAnswers(){if(S.view==='answers')return;S.af='';S.aq='';S.view='answers';nav()}
 /* ====== favorieten ====== */
-const FKEY='reflectie_favorieten_v1';
+const FKEY='reflectie_favorieten';
 const loadF=()=>{try{const a=JSON.parse(localStorage.getItem(FKEY));return Array.isArray(a)?a.filter(f=>f&&typeof f.id==='string'):[]}catch(e){return[]}};
 const saveF=a=>{try{localStorage.setItem(FKEY,JSON.stringify(a));return true}catch(e){return false}};
 const isFav=id=>loadF().some(f=>f.id===id);
@@ -585,7 +589,7 @@ async function renderFavs(){
   <p class="muted" style="margin:0">${favs.length?`${favs.length} ${favs.length===1?'vraag':'vragen'}. Tik op de ster om een vraag uit je favorieten te halen.`:'Je hebt nog geen favoriete vragen. Tik op het sterretje bij een vraag om ze hier te bewaren.'}</p></div>
   <div>${rows.map((r,n)=>r.it
    ?`<div class="qrow"><button class="qitem" data-o="${n}">${esc(r.it.q)}<small>${esc(r.fw.naam)} · ${esc(r.it.cat)}${r.it.pil?' · '+esc(r.it.pil):''}</small></button>${starBtn(r.f.id,r.f.fw)}</div>`
-   :`<div class="qrow"><div class="qitem off">Deze vraag is niet meer beschikbaar<small>${r.fw?esc(r.fw.naam):''}</small></div>${starBtn(r.f.id,r.f.fw)}</div>`).join('')}</div>`;
+   :`<div class="qrow off"><div class="qitem off">Deze vraag is niet meer beschikbaar<small>${r.fw?esc(r.fw.naam):''}</small></div>${starBtn(r.f.id,r.f.fw)}</div>`).join('')}</div>`;
  wireStars($('#app'),renderFavs);
  document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const r=rows[+b.dataset.o];
   S.fw=r.fw;S.items=DATA[r.fw.id];S.filter={cat:null,pil:null};S.fromList=null;S.cur=r.it;S.showInfo=false;S.msg=null;setAccent(r.fw.kleur);S.view='question';nav()});
@@ -601,8 +605,7 @@ function printAnswers(list,titel){
  const done=()=>{document.title=old;window.removeEventListener('afterprint',done)};window.addEventListener('afterprint',done);
  setTimeout(()=>{try{window.print()}catch(e){done()}},150)}
 /* ====== back-up: exporteren en importeren ====== */
-function backupSummary(){const a=load().length,h=loadH().length,fv=loadF().length;
- return a||h||fv?`Op dit toestel: ${a} ${a===1?'antwoord':'antwoorden'}${fv?`, ${fv} ${fv===1?'favoriet':'favorieten'}`:''}${h?` en ${h} verborgen ${h===1?'vraag':'vragen'}`:''}.`:'Op dit toestel zijn er nog geen antwoorden bewaard.'}
+function backupSummary(){return''}
 function bkMsg(t,ok){const e=$('#bkmsg');if(e)e.innerHTML=`<p class="${ok?'ok':'no'}">${esc(t)}</p>`}
 function makeBackup(){return{app:'kernmapp',versie:1,geexporteerd:new Date().toISOString(),antwoorden:load(),verborgen:loadH(),favorieten:loadF()}}
 async function doExport(){
