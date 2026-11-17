@@ -130,6 +130,7 @@ button.btn.danger{background:var(--rood);color:#fff}
 .hist small{display:block;font-weight:700;opacity:.65;margin-bottom:3px}
 .info{background:var(--beige);border-radius:18px;padding:14px 18px;margin:14px 0}
 .info p{margin:0 0 .9em}.info p:last-child{margin-bottom:0}
+.doqv{display:block;width:100%;height:auto;margin-top:6px}
 .info h3.pt{color:var(--groen)}
 .info ul.bl{margin:0 0 .9em;padding-left:1.3em}.info ul.bl li{margin:.1em 0}
 .pick{display:flex;flex-wrap:wrap;gap:4px}
@@ -357,7 +358,7 @@ let DP=null;
 function showInstall(){
  if(!DP||S.fw||S.view==='answers'||S.view==='favs'||$('#installBtn'))return;
  const c=$('#app .card.big');if(!c)return;
- c.insertAdjacentHTML('beforeend','<button class="btn geel" id="installBtn" style="margin-top:8px">⬇ Installeer als app</button>');
+ c.insertAdjacentHTML('beforeend','<button class="btn geel" id="installBtn" style="margin:12px 0 0">⬇ Installeer als app</button>');
  $('#installBtn').onclick=async()=>{if(!DP)return;DP.prompt();try{await DP.userChoice}catch(e){}DP=null;const b=$('#installBtn');if(b)b.remove()}}
 function render(){
  if(S.view==='favs'){$('#orgLogo').style.display='none';$('#kop').textContent='Favoriete vragen';return renderFavs()}
@@ -365,7 +366,7 @@ function render(){
  const app=$('#app');$('#orgLogo').style.display=S.fw?'none':'';
  $('#kop').textContent=S.fw?S.fw.naam:'Kern•m•app';
  if(!S.fw){
-  app.innerHTML=`<div class="card big"><h2>Welkom!</h2><p>Je kiest een kader en vindt er informatie, reflectievragen, ... Je antwoorden worden enkel op je eigen toestel opgeslagen.</p></div>
+  app.innerHTML=`<div class="card big"><h2>Welkom!</h2><p style="margin-bottom:0">Je kiest een kader en vindt er informatie, reflectievragen, ... Je antwoorden worden enkel op je eigen toestel opgeslagen.</p></div>
   <div class="stack">${FRAMEWORKS.map(f=>`<button class="card fw" data-id="${f.id}">${f.pagina?badgeInfo(f.kleur):badge(f.kleur)}<span class="txt"><h2 style="color:${f.kleur}">${esc(f.naam)}</h2><p>${esc(f.kort)}</p></span></button>`).join('')}</div>`;
   app.querySelectorAll('.fw').forEach(b=>b.onclick=()=>start(FRAMEWORKS.find(f=>f.id===b.dataset.id)));
   showInstall();
@@ -402,13 +403,27 @@ function pijlerInfoFor(...names){const L=S.fw.pijlerInfo||[];
 const GROEI_TEKST='Hier vind je suggesties van vragen terug, bedoeld om je als hulpverlener te inspireren of te prikkelen. Geef gerust je eigen twist aan de vraagstellingen, aangepast aan de situatie of de persoon die voor je zit.';
 const isGroei=(cat,pil)=>S.fw.id==='kwaliteitsatoom'&&(norm(cat||'')==='groeivragen'||norm(pil||'')==='groeivragen');
 /* Info-knoppen bij een vraag of overzicht: pijler en/of groeivragen; anders de modeltekst */
+const DOQ_VISUAL=`<div class="info"><h3>Visual</h3><svg class="doqv" viewBox="0 0 640 420" role="img" aria-label="Kwadrantmodel: horizontaal verleden en toekomst, verticaal positief en negatief. Linksboven positieve ervaringen, rechtsboven gewenste toekomst, linksonder negatieve ervaringen, rechtsonder gevreesde toekomst."><g font-family="'Roboto Slab',Georgia,serif" font-weight="700" text-anchor="middle">
+<rect x="104" y="56" width="208" height="140" rx="22" fill="#007a23" opacity=".13"/><rect x="328" y="56" width="208" height="140" rx="22" fill="#007a23" opacity=".13"/>
+<rect x="104" y="224" width="208" height="140" rx="22" fill="#33a6c0" opacity=".16"/><rect x="328" y="224" width="208" height="140" rx="22" fill="#33a6c0" opacity=".16"/>
+<path d="M320 52V368M120 210H520" stroke="#2a7174" stroke-width="3" stroke-linecap="round" fill="none"/>
+<circle cx="320" cy="210" r="7" fill="#ec9801" stroke="#f3f3f3" stroke-width="2"/>
+<circle cx="320" cy="26" r="20" fill="#007a23"/><path d="M320 17v18M311 26h18" stroke="#f3f3f3" stroke-width="4.5" stroke-linecap="round"/>
+<circle cx="320" cy="394" r="20" fill="#33a6c0"/><path d="M311 394h18" stroke="#f3f3f3" stroke-width="4.5" stroke-linecap="round"/>
+<text x="0" y="218" font-size="22" fill="#2a7174" text-anchor="start">Verleden</text><text x="640" y="218" font-size="22" fill="#2a7174" text-anchor="end">Toekomst</text>
+<text x="208" y="125" font-size="21" fill="#007a23">Positieve</text><text x="208" y="152" font-size="21" fill="#007a23">ervaringen</text>
+<text x="432" y="125" font-size="21" fill="#007a23">Gewenste</text><text x="432" y="152" font-size="21" fill="#007a23">toekomst</text>
+<text x="208" y="293" font-size="21" fill="#1d7a93">Negatieve</text><text x="208" y="320" font-size="21" fill="#1d7a93">ervaringen</text>
+<text x="432" y="293" font-size="21" fill="#1d7a93">Gevreesde</text><text x="432" y="320" font-size="21" fill="#1d7a93">toekomst</text></g></svg></div>`;
+const ICON_VISUAL='<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" style="vertical-align:-2px"><g fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" opacity=".55"/><rect x="1" y="9" width="6" height="6" rx="1.5" opacity=".55"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></g></svg>';
 function infoItems(cat,pil){const it=[];const pi=pijlerInfoFor(cat,pil);
  if(pi)it.push({key:'p',label:'Info over deze pijler',html:`<div class="info"><h3 class="pt"${pi.kleur?` style="color:${pi.kleur}"`:''}>${esc(pi.titel)}</h3>${rich(pi.tekst)}</div>`});
  if(isGroei(cat,pil))it.push({key:'g',label:'Info over groeivragen',html:`<div class="info"><h3 class="pt" style="color:${CAT_KLEUR.groeivragen}">Groeivragen</h3>${rich(GROEI_TEKST)}</div>`});
  if(!it.length)it.push({key:'m',label:'Meer over '+S.fw.naam,html:`<div class="info"><h3>${esc(S.fw.naam)}</h3>${esc(S.fw.info)}</div>`});
+ if(S.fw&&S.fw.id==='kwadrantdoq')it.push({key:'v',label:'Visual',icon:ICON_VISUAL,html:DOQ_VISUAL});
  return it}
 function infoBlock(cat,pil,idPrefix){const it=infoItems(cat,pil);
- return it.map(i=>`<button class="btn geel" data-info="${i.key}">ⓘ ${esc(i.label)}</button>`).join('')+(it.find(i=>i.key===S.showInfo)||{html:''}).html}
+ return it.map(i=>`<button class="btn geel" data-info="${i.key}">${i.icon||'ⓘ'} ${esc(i.label)}</button>`).join('')+(it.find(i=>i.key===S.showInfo)||{html:''}).html}
 function wireInfo(after){document.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>{const t=document.getElementById('ans');const v=t?t.value:null;S.showInfo=S.showInfo===b.dataset.info?false:b.dataset.info;after();if(v!==null&&document.getElementById('ans'))document.getElementById('ans').value=v})}
 function randomQ(){
  const p=pool();
@@ -437,7 +452,8 @@ function renderQuestion(){
   <textarea id="ans" placeholder="Schrijf hier je reflectie…"></textarea>
   <div id="msg"></div>
   <button class="btn" id="saveBtn">Bewaar antwoord</button>
-  <button class="btn alt" id="skipBtn">Overslaan</button>
+  <button class="btn alt" id="nextBtn">🎲 Nieuwe random vraag</button>
+  <button class="btn alt" id="pickBtn">Vraagcategorie kiezen</button>
   <button class="btn alt" id="hideBtn" title="Deze vraag krijg je dan niet meer te zien">🚫 Deze vraag niet meer tonen</button>
  </div>`;
  clampHt($('#app'));wireAnswers($('#app'),rerenderQ);wireStars($('#app'));
@@ -447,7 +463,8 @@ function renderQuestion(){
  {const ta=$('#ans'),dr=loadD()[id];
   if(dr&&dr.t){ta.value=dr.t;$('#msg').innerHTML=`<p class="muted">✎ Concept van ${fmt(dr.d)} hersteld.</p>`}
   ta.addEventListener('input',()=>setDraft(id,ta.value))}
- $('#skipBtn').onclick=()=>{S.view='after';S.saved=false;S.msg=null;nav()};
+ $('#nextBtn').onclick=randomQ;
+ $('#pickBtn').onclick=()=>{S.view='choose';S.pickCat=null;nav()};
  $('#hideBtn').onclick=()=>{
   if(!hide(q)){$('#msg').innerHTML='<p class="err">Verbergen is mislukt (opslag geblokkeerd of vol).</p>';return}
   S.lastHidden=q;S.view='after';S.saved=false;S.msg='hidden';nav();
@@ -467,7 +484,7 @@ function renderAfter(){
  <h2>Hoe wil je verder?</h2>
  ${S.fromList?`<button class="btn" id="ov">☰ Terug naar overzicht${S.fromList.cat?' ('+esc(S.fromList.pil||S.fromList.cat)+')':''}</button>`:''}
  <button class="btn" id="rnd">🎲 Nog een random vraag${S.filter.cat?' (zelfde selectie)':''}</button>
- <button class="btn geel" id="chs">Zelf kiezen: pijler &amp; categorie</button>
+ <button class="btn" id="chs">Vraagcategorie kiezen</button>
  ${S.filter.cat?`<button class="btn alt" id="all">Selectie wissen</button>`:''}
  <p class="muted">${sel?'Huidige selectie'+sel:'Random uit alle vragen van '+esc(S.fw.naam)}</p></div>`;
  $('#rnd').onclick=randomQ;
