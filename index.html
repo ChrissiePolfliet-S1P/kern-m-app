@@ -32,9 +32,8 @@ main{max-width:720px;margin:0 auto;padding:28px 16px 60px}
 .stack{display:flex;flex-direction:column;gap:14px}
 .fw{display:flex;align-items:center;gap:18px;width:100%;cursor:pointer;text-align:left;font:inherit;color:var(--ink);margin:0;padding:18px 22px;transition:transform .15s,box-shadow .15s}
 .fw:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(35,49,42,.14)}
-.fw .badge{flex:none;width:64px;height:64px}
+.fw .badge{flex:none;width:52px;height:52px}
 .fw .txt{flex:1}.fw h2{margin:0 0 2px}.fw p{margin:0}
-.fw .go{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:16pt}
 button.btn{font:700 11pt Calibri,Carlito,sans-serif;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:10px 22px;cursor:pointer;margin:4px 8px 4px 0;transition:transform .12s,filter .12s}
 button.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
 button.btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px rgba(35,49,42,.3)}
@@ -90,11 +89,23 @@ header h1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .kw{color:var(--groen)}
 .undo{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;background:var(--beige);border-radius:16px;padding:8px 8px 8px 16px;margin:0 0 14px}
 .undo .btn{margin:0}
+.ahead{margin-bottom:4px}.ahead b{display:block;margin-bottom:4px}
+.ahead .chip{font-size:9pt;padding:1px 10px;margin:0 5px 4px 0}
+.arow{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;margin-top:4px}
+.arow .more{padding:2px 0}.arow .no{font-weight:700;color:var(--rood)}
+button.btn.sm{padding:6px 14px;font-size:10pt;margin:2px 6px 2px 0}
+button.btn.danger{background:var(--rood);color:#fff}
+.editta{min-height:100px;margin:6px 0 4px}.editta.bad{border-color:var(--rood)}
+#asearch{width:100%;font:inherit;padding:10px 16px;border:1.5px solid rgba(35,49,42,.25);border-radius:999px;background:#fff;margin:8px 0 10px;outline:none}
+#asearch:focus{border-color:var(--accent)}
 .more{background:none;border:0;padding:4px 0 0;margin:0;font:700 10pt Calibri,Carlito,sans-serif;color:var(--accent);cursor:pointer}
 .more:hover{text-decoration:underline}
 .hist::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:4px;background:var(--accent)}
 .hist small{display:block;font-weight:700;opacity:.65;margin-bottom:3px}
 .info{background:var(--beige);border-radius:18px;padding:14px 18px;margin:14px 0}
+.info p{margin:0 0 .9em}.info p:last-child{margin-bottom:0}
+.info h3.pt{color:var(--groen)}
+.info ul.bl{margin:0 0 .9em;padding-left:1.3em}.info ul.bl li{margin:.1em 0}
 .pick{display:flex;flex-wrap:wrap;gap:4px}
 .err{color:var(--rood);font-weight:700}
 .card.err{border-color:var(--rood)}
@@ -111,14 +122,16 @@ header h1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 <button class="inst" id="installBtn" style="display:none">⬇ Installeer</button>
 <span class="orglogo" id="orgLogo"><img src="data:image/jpeg;base64,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" alt="Samen1Plan Gent – Scheldekracht" width="420" height="230"></span>
 <div class="gearwrap"><button class="gear" id="gearBtn" aria-label="Instellingen" aria-haspopup="true" aria-expanded="false" title="Instellingen"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#f3f3f3" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M9.96 4.89 L10.44 2.12 L13.56 2.12 L14.04 4.89 L15.59 5.53 L17.88 3.91 L20.09 6.12 L18.47 8.41 L19.11 9.96 L21.88 10.44 L21.88 13.56 L19.11 14.04 L18.47 15.59 L20.09 17.88 L17.88 20.09 L15.59 18.47 L14.04 19.11 L13.56 21.88 L10.44 21.88 L9.96 19.11 L8.41 18.47 L6.12 20.09 L3.91 17.88 L5.53 15.59 L4.89 14.04 L2.12 13.56 L2.12 10.44 L4.89 9.96 L5.53 8.41 L3.91 6.12 L6.12 3.91 L8.41 5.53Z"/><circle cx="12" cy="12" r="3.2"/></g></svg></button>
-<div class="menu" id="menu" hidden role="menu"><div class="mh">Back-up</div>
+<div class="menu" id="menu" hidden role="menu"><div class="mh">Antwoorden</div>
+<button role="menuitem" id="mine">📖 Mijn antwoorden</button>
+<div class="mh">Back-up</div>
 <button role="menuitem" id="exp">⬇ Antwoorden exporteren</button>
 <button role="menuitem" id="imp">⬆ Antwoorden importeren</button>
 <input type="file" id="impFile" accept=".json,application/json" style="display:none">
 <div class="mh">Beheer</div>
 <button role="menuitem" id="unh">↺ Verborgen vragen terugzetten</button>
 <button role="menuitem" id="wipe" class="danger">🗑 Alle gegevens wissen</button>
-<p class="msum" id="menuSum"></p><div id="bkmsg" aria-live="polite"></div></div></div>
+<p class="msum" id="menuSum"></p><p class="msum" id="menuPersist"></p><div id="bkmsg" aria-live="polite"></div></div></div>
 </header>
 <main id="app"></main>
 
@@ -129,6 +142,72 @@ const BASE='https://script.google.com/macros/s/AKfycbyvxvo2DIyjA2-FxITZtKdvy59e7
 const FRAMEWORKS=[
  {id:'kwaliteitsatoom',naam:'Kwaliteitsatoom',url:BASE+'Kwaliteitsatoom',kleur:'#007a23',
   kort:'Reflecteer vanuit de categorieën en pijlers van ons gedeeld 1G1P referentiekader.',
+  /* Info per pijler. match = woorden waarmee de pijlernaam uit de API herkend wordt (hoofdletters en leestekens maken niet uit).
+     Opmaak in tekst: **vet** en een lege regel voor een nieuwe alinea. */
+  pijlerInfo:[
+   {match:['krachtgericht','netwerkversterkend'],kleur:'#007a23',titel:'Pijler 1: Krachtgericht en netwerkversterkend werken',tekst:`Onze kwaliteitspijlers krijgen vorm vanuit twee centrale benaderingen: krachtgericht en netwerkversterkend werken. Zij vormen de kern van ons handelen en geven richting aan de wijze waarop we met het gezin en hun omgeving op weg gaan.
+
+**Krachtgericht werken** is in essentie een basishouding die we aannemen in de relatie met het gezinslid, onszelf en het bredere netwerk. Als hulpverlener verkennen we in de verhalen van de cliënt – over zichzelf en de context – wat er goed gaat, sterktes, vaardigheden, waarden en helpende overtuigingen.
+
+Door krachtgericht te observeren, te luisteren én door te vragen, verkennen we wat wél werkt. Dit doen we steeds in combinatie met de nodige erkenning voor de bestaande moeilijkheden en zorgen. Met deze benadering voegen we hoopvolle betekenissen toe aan de levensverhalen van de cliënten.
+
+**Netwerkversterkend werken** richt zich op de bredere omgeving van het gezin, zoals familie, vrienden, school en de buurt. Door dit sociale netwerk te verkennen, te verbreden en te verdiepen, brengen we de steunbronnen van de gezinsleden in kaart. Het gezin bepaalt hierbij zelf hoe dit netwerk van waarde is, of kan zijn, voor het realiseren van hun gewenste leven.`},
+   {match:['regie','aanhetstuur'],kleur:'#ec9801',titel:'Pijler 2: Regie bij het gezin',tekst:`De vragen en doelen van het gezin vormen ons kompas. We sluiten aan bij hun waarden, mogelijkheden en tempo, met oog voor de draagkracht van elk gezinslid. We laten de regie bij hen en zetten hen maximaal aan het stuur. Wat die regie precies inhoudt, verschilt per gezin en vraagt daarom maatwerk. Als de draagkracht overschreden is, bieden we in samenspraak met het gezin tijdelijk extra sturing.
+
+**Wat streven we na?**
+
+**1. Samenredzaamheid**
+Het gezin en hun netwerk bundelen de krachten, zodat er stelselmatig minder behoefte is aan professionele hulp.
+
+**2. Participatieve samenwerking**
+We praten niet over het gezin, maar mét het gezin. Hierbij werken we volgens het principe: samen weten, samen denken, samen doen.
+
+**3. Weloverwogen keuzes**
+Gezinnen krijgen overzichtelijke en begrijpelijke informatie. Zo weten ze precies waar ze aan toe zijn en kunnen ze keuzes maken die bij hen passen.`},
+   {match:['flexibele','nabije'],kleur:'#d64b37',titel:'Pijler 3: Flexibele en nabije hulp',tekst:`**Flexibele hulp** betekent dat we de begeleiding samen met het gezin vormgeven, op hun maat. Vanuit onze generalistische expertise schakelen we tijdig bij met de meest passende hulp. We stemmen de doelen af op hun noden en gebruiken onze creativiteit om maatwerk te bieden. Tegelijk vraagt flexibiliteit om een duidelijk speelveld: we maken verwachtingen helder, volgen afspraken op en blijven liefdevol consequent wanneer er spanning ontstaat.
+
+**Nabije hulp** vertrekt vanuit de leefwereld van het gezin. We werken laagdrempelig, zijn vlot bereikbaar en zorgen dat kinderen, jongeren en ouders zich gehoord voelen. Zonder meer hulp toe te voegen dan nodig, versterken we de krachten in en rond het gezin. Zo helpen we het gewone leven weer vooruit, zonder het over te nemen.
+
+**Wat streven we na?**
+
+**1. Passende hulp op het juiste moment**
+Binnen de grenzen van onze opdracht benutten we onze ruimte om buiten de lijntjes te kleuren. We sluiten aan bij wat het gezin op dat moment nodig heeft, terwijl heldere afspraken ervoor zorgen dat de focus behouden blijft.
+
+**2. Aansluiting bij hun leefwereld**
+We organiseren de ondersteuning waar het dagelijkse leven zich afspeelt: van de keukentafel tot de school, in de buurt en daarbuiten. Zo maken we de hulp herkenbaar, toegankelijk en dichtbij.
+
+**3. Authentieke verbinding**
+Kinderen, jongeren en ouders voelen dat we er écht zijn voor hen. We bieden een veilige basis waar elke vraag of bezorgdheid gedeeld kan worden, en bouwen aan een vertrouwensband die hen hoop en perspectief geeft.`},
+   {match:['verbinden','samenwerken'],kleur:'#33a6c0',titel:'Pijler 4: Verbinden en samenwerken',tekst:`We verbinden het gezin actief met hun netwerk:
+
+- Informeel: familie, vrienden, buren, ...
+- Formeel: hulpverleners, diensten, ...
+
+We brengen in kaart wie betekenisvol is en wie een ondersteunende rol kan opnemen. We versterken bestaande relaties, leggen nieuwe verbindingen en zorgen ervoor dat ze elkaar vinden. Samen met het gezin stemmen we af welke informatie er gedeeld wordt. Zo werken we transparant toe naar een gedragen en gedeelde aanpak en samenwerking.
+
+**Wat streven we na?**
+
+**1. Een zichtbaar netwerk rond het gezin**
+In dialoog met het gezin brengen we hun netwerk in kaart. Dit helpt hen om de kracht en steun van hun eigen omgeving te (her)ontdekken. We versterken bestaande relaties en zorgen voor duidelijkheid: bij wie kan het gezin allemaal terecht en wie neemt welke rol op?
+
+**2. Gedeelde verantwoordelijkheid en afstemming**
+We stimuleren een nieuwe samenwerking tussen het gezin, hun netwerk en professionals. Via overleg, transparante informatie-uitwisseling en gezamenlijke besluitvorming worden verantwoordelijkheden helder en gedragen door alle betrokkenen, met het gezin steeds maximaal aan het stuur.
+
+**3. Eén samenhangend en begrijpelijk plan**
+Alle ondersteuning komt samen in één overzichtelijk plan dat aansluit bij de noden van het gezin. Hierdoor blijft de hulp helder, samenhangend en haalbaar.`},
+   {match:['continu','tijdelijk'],kleur:'#2a7174',titel:'Pijler 5: Continuïteit en tijdelijkheid',tekst:`Continuïteit vraagt om een goede relationele afstemming en heldere afspraken tussen het gezin, hun netwerk en de betrokken diensten. Binnen onze vooropgestelde begeleidingstermijn werken we samen met het gezin aan haalbare en doelgerichte stappen. Vanaf de start kijken we vooruit en verbinden we tijdig het netwerk en de juiste diensten. Zo leggen we een basis waarop het gezin ook na afloop van onze begeleiding verder kan.
+
+**Wat streven we na?**
+
+**1. Overzicht**
+Het gezin ervaart de ondersteuning als één samenhangend geheel. Wanneer er meerdere diensten of mensen betrokken zijn, is het helder wie wat doet en waar het gezin terechtkan met vragen.
+
+**2. Doelgerichte vooruitgang**
+Er is een duidelijke focus. Het gezin en de hulpverleners richten zich samen op wat nu prioritair is en zetten hier haalbare stappen in.
+
+**3. Een sterke basis voor de toekomst**
+Het gezin kan na het traject met vertrouwen verder, samen met de mensen die om hen heen blijven staan.`}
+  ],
   info:'Het kwaliteitsatoom is een model dat kwaliteit van hulp- en dienstverlening in kaart brengt aan de hand van categorieën en pijlers, die samen het atoom vormen. Gebruik het om te onderzoeken waar je sterk in bent en waar je nog kan groeien. (Vervang deze tekst door de officiële toelichting.)'},
  {id:'kwadrantdoq',naam:'KwadrantDOQ',url:BASE+'KwadrantDOQ',kleur:'#2a7174',
   kort:'Reflecteer vanuit de kwadranten van het DOQ-model.',
@@ -200,19 +279,19 @@ function parse(json,fw){
   let top=PIJLER_EERST?A:B,sub=PIJLER_EERST?B:A;
   if(!top){top=sub;sub=''}
   const vid=g(kid);
-  return vid?{id:vid,q:q.trim(),cat:top||'Algemeen',pil:sub}:{q:q.trim(),cat:top||'Algemeen',pil:sub}
- }).filter(x=>x.q);
+  return{id:vid,q:q.trim(),cat:top||'Algemeen',pil:sub}
+ }).filter(x=>x.q&&x.id);   /* een vraag zonder UUID wordt nooit getoond */
 }
 /* ====== data: 1x ophalen, daarna op de achtergrond synchroniseren ====== */
 const DATA={},P={};let lastSync=0;
-(function(){FRAMEWORKS.forEach(fw=>{try{const c=JSON.parse(localStorage.getItem('reflectie_cache4_'+fw.id));if(c&&c.length)DATA[fw.id]=c}catch(e){}})})();
+(function(){FRAMEWORKS.forEach(fw=>{try{const c=JSON.parse(localStorage.getItem('reflectie_cache_'+fw.id));const ok=Array.isArray(c)?c.filter(x=>x&&x.id):[];if(ok.length)DATA[fw.id]=ok}catch(e){}})})();
 function syncOne(fw){
  if(P[fw.id])return P[fw.id];
  return P[fw.id]=(async()=>{try{
   const r=await fetch(fw.url);if(!r.ok)throw new Error('http');
   const items=parse(await r.json(),fw);if(!items.length)throw new Error('leeg');
-  DATA[fw.id]=items;migrate();
-  try{localStorage.setItem('reflectie_cache4_'+fw.id,JSON.stringify(items))}catch(e){}
+  DATA[fw.id]=items;
+  try{localStorage.setItem('reflectie_cache_'+fw.id,JSON.stringify(items))}catch(e){}
   if(S.fw===fw){S.items=items;if(S.cur)S.cur=items.find(i=>same(i,S.cur))||S.cur}
   return items;
  }finally{delete P[fw.id]}})();
@@ -228,11 +307,15 @@ function setAccent(c){document.documentElement.style.setProperty('--accent',c||'
 /* ====== navigatie (browsergeschiedenis) ====== */
 let depth=0;
 const snap=()=>({fw:S.fw&&S.fw.id,view:S.view,cur:S.cur?S.items.findIndex(i=>same(i,S.cur)):-1,filter:S.filter,pickCat:S.pickCat||null,saved:!!S.saved,from:S.fromList||null});
-function nav(){depth++;history.pushState({...snap(),n:depth},'');render()}
+function nav(){S.editKey=S.delKey=null;depth++;history.pushState({...snap(),n:depth},'');render()}
 history.replaceState({view:'home',n:0},'');
-$('#backBtn').onclick=()=>{if(depth>0)history.go(-depth);else window.scrollTo({top:0,behavior:'smooth'})};
+$('#backBtn').onclick=()=>{if(!S.fw&&S.view!=='answers'){window.scrollTo({top:0,behavior:'smooth'});return}
+ const t=$('#ans');if(t&&S.cur)setDraft(qid(S.cur),t.value);
+ depth++;history.pushState({view:'home',n:depth},'');
+ S={fw:null,items:[],cur:null,filter:{cat:null,pil:null},showInfo:false};setAccent();render()};
 window.addEventListener('popstate',async e=>{
- const st=e.state;depth=st?st.n:0;
+ const st=e.state;depth=st?st.n:0;S.editKey=S.delKey=null;
+ if(st&&st.view==='answers'){const f0=st.fw?FRAMEWORKS.find(f=>f.id===st.fw):null;S.fw=f0||null;setAccent(f0?f0.kleur:undefined);S.view='answers';render();return}
  if(!st||!st.fw){S={fw:null,items:[],cur:null,filter:{cat:null,pil:null},showInfo:false};setAccent();render();return}
  const fw=FRAMEWORKS.find(f=>f.id===st.fw);
  if(fw.pagina){S.fw=fw;S.items=[];S.cur=null;S.fromList=null;setAccent(fw.kleur);S.view='page';render();return}
@@ -245,11 +328,12 @@ window.addEventListener('popstate',async e=>{
 const badgeInfo=c=>`<svg class="badge" viewBox="0 0 64 64"><circle cx="32" cy="32" r="31" fill="${c}" opacity=".15"/><path d="M14 32h36" stroke="${c}" stroke-width="3" stroke-linecap="round"/><g stroke="#f3f3f3" stroke-width="1.5"><circle cx="14" cy="32" r="6.5" fill="${c}"/><circle cx="32" cy="32" r="6.5" fill="${c}"/><circle cx="50" cy="32" r="6.5" fill="${c}"/></g></svg>`;
 const badge=c=>`<svg class="badge" viewBox="0 0 64 64"><circle cx="32" cy="32" r="31" fill="${c}" opacity=".15"/><g fill="none" stroke="${c}" stroke-width="2.5"><ellipse cx="32" cy="32" rx="24" ry="9"/><ellipse cx="32" cy="32" rx="24" ry="9" transform="rotate(60 32 32)"/><ellipse cx="32" cy="32" rx="24" ry="9" transform="rotate(120 32 32)"/></g><g stroke="#f3f3f3" stroke-width="1"><circle cx="20" cy="11.2" r="3" fill="#d64b37"/><circle cx="44" cy="11.2" r="3" fill="#ec9801"/><circle cx="56" cy="32" r="3" fill="#33a6c0"/><circle cx="20" cy="52.8" r="3" fill="#2a7174"/></g><circle cx="32" cy="32" r="6" fill="${c}"/></svg>`;
 function render(){
+ if(S.view==='answers'){$('#backBtn').style.display='';$('#orgLogo').style.display='none';$('#kop').textContent='Mijn antwoorden';return renderAnswers()}
  const app=$('#app');$('#backBtn').style.display=S.fw?'':'none';$('#orgLogo').style.display=S.fw?'none':'';
  $('#kop').textContent=S.fw?S.fw.naam:'Kern•m•app';
  if(!S.fw){
   app.innerHTML=`<div class="card big"><h2>Welkom!</h2><p>Je kiest een kader en vindt er informatie, reflectievragen, ... Je antwoorden worden enkel op je eigen toestel opgeslagen.</p></div>
-  <div class="stack">${FRAMEWORKS.map(f=>`<button class="card fw" data-id="${f.id}">${f.pagina?badgeInfo(f.kleur):badge(f.kleur)}<span class="txt"><h2 style="color:${f.kleur}">${esc(f.naam)}</h2><p>${esc(f.kort)}</p></span><span class="go" style="background:${f.kleur}">→</span></button>`).join('')}</div>`;
+  <div class="stack">${FRAMEWORKS.map(f=>`<button class="card fw" data-id="${f.id}">${f.pagina?badgeInfo(f.kleur):badge(f.kleur)}<span class="txt"><h2 style="color:${f.kleur}">${esc(f.naam)}</h2><p>${esc(f.kort)}</p></span></button>`).join('')}</div>`;
   app.querySelectorAll('.fw').forEach(b=>b.onclick=()=>start(FRAMEWORKS.find(f=>f.id===b.dataset.id)));
   return;
  }
@@ -267,28 +351,31 @@ async function start(fw){
  try{S.items=await getData(fw);S.filter={cat:null,pil:null};randomQ()}catch(e){S.view='error';render()}
 }
 const HKEY='reflectie_verborgen_v1';
-/* ====== migratie: antwoorden en verborgen vragen koppelen aan het ID uit de API ====== */
-function migrate(){
- let ans,h;try{ans=JSON.parse(localStorage.getItem(KEY))||[];h=JSON.parse(localStorage.getItem(HKEY))||[]}catch(e){return}
- let changed=false;
- FRAMEWORKS.forEach(fw=>{const items=DATA[fw.id];if(!items)return;
-  const map=new Map();items.forEach(i=>{if(i.id)map.set(fw.id+'|'+i.q,fw.id+'|'+i.id)});
-  if(!map.size)return;
-  ans.forEach(a=>{const n=map.get(a.id);if(n){a.id=n;changed=true}});
-  h=h.map(x=>{const n=map.get(x);if(n){changed=true;return n}return x});
- });
- if(changed){try{localStorage.setItem(KEY,JSON.stringify(ans));localStorage.setItem(HKEY,JSON.stringify([...new Set(h)]))}catch(e){}}
-}
 const loadH=()=>{try{return JSON.parse(localStorage.getItem(HKEY))||[]}catch(e){return[]}};
 const saveH=a=>{try{localStorage.setItem(HKEY,JSON.stringify(a));return true}catch(e){return false}};
-const qid=i=>S.fw.id+'|'+(i.id||i.q);
-const same=(a,b)=>!!a&&!!b&&(a.id&&b.id?a.id===b.id:(a.q===b.q&&a.cat===b.cat));
+const qid=i=>String(i.id);   /* het UUID uit de API is rechtstreeks de sleutel */
+const same=(a,b)=>!!a&&!!b&&a.id===b.id;
 const isHidden=i=>loadH().includes(qid(i));
 function hide(i){const h=loadH();if(!h.includes(qid(i)))h.push(qid(i));return saveH(h)}
 function unhide(i){return saveH(loadH().filter(x=>x!==qid(i)))}
 function pool(incl){const h=incl?[]:loadH();return S.items.filter(i=>(!S.filter.cat||i.cat===S.filter.cat)&&(!S.filter.pil||i.pil===S.filter.pil)&&!h.includes(qid(i)))}
-function infoHtml(cat){const pi=(S.fw.pijlerInfo||{})[cat];
- return `<div class="info">${pi?`<h3>${esc(cat)}</h3><p>${esc(pi)}</p>`:''}<h3>${esc(S.fw.naam)}</h3>${esc(S.fw.info)}</div>`}
+function rich(t){const f=x=>esc(x).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+ return String(t).trim().split(/\n\s*\n/).map(a=>{const L=a.trim().split('\n');
+  if(L.every(l=>/^\s*-\s+/.test(l)))return '<ul class="bl">'+L.map(l=>'<li>'+f(l.replace(/^\s*-\s+/,''))+'</li>').join('')+'</ul>';
+  return '<p>'+L.map(f).join('<br>')+'</p>'}).join('')}
+function pijlerInfoFor(...names){const L=S.fw.pijlerInfo||[];
+ for(const n of names){if(!n)continue;const k=norm(n);const hit=L.find(x=>x.match.some(m=>k.includes(norm(m))));if(hit)return hit}return null}
+const GROEI_TEKST='Hier vind je suggesties van vragen terug, bedoeld om je als hulpverlener te inspireren of te prikkelen. Geef gerust je eigen twist aan de vraagstellingen, aangepast aan de situatie of de persoon die voor je zit.';
+const isGroei=(cat,pil)=>S.fw.id==='kwaliteitsatoom'&&(norm(cat||'')==='groeivragen'||norm(pil||'')==='groeivragen');
+/* Info-knoppen bij een vraag of overzicht: pijler en/of groeivragen; anders de modeltekst */
+function infoItems(cat,pil){const it=[];const pi=pijlerInfoFor(cat,pil);
+ if(pi)it.push({key:'p',label:'Info over deze pijler',html:`<div class="info"><h3 class="pt"${pi.kleur?` style="color:${pi.kleur}"`:''}>${esc(pi.titel)}</h3>${rich(pi.tekst)}</div>`});
+ if(isGroei(cat,pil))it.push({key:'g',label:'Info over groeivragen',html:`<div class="info"><h3 class="pt" style="color:${CAT_KLEUR.groeivragen}">Groeivragen</h3>${rich(GROEI_TEKST)}</div>`});
+ if(!it.length)it.push({key:'m',label:'Meer over '+S.fw.naam,html:`<div class="info"><h3>${esc(S.fw.naam)}</h3>${esc(S.fw.info)}</div>`});
+ return it}
+function infoBlock(cat,pil,idPrefix){const it=infoItems(cat,pil);
+ return it.map(i=>`<button class="btn geel" data-info="${i.key}">ⓘ ${esc(i.label)}</button>`).join('')+(it.find(i=>i.key===S.showInfo)||{html:''}).html}
+function wireInfo(after){document.querySelectorAll('[data-info]').forEach(b=>b.onclick=()=>{const t=document.getElementById('ans');const v=t?t.value:null;S.showInfo=S.showInfo===b.dataset.info?false:b.dataset.info;after();if(v!==null&&document.getElementById('ans'))document.getElementById('ans').value=v})}
 function randomQ(){
  const p=pool();
  if(!p.length){S.msg='empty';S.saved=false;S.view='after';nav();return}
@@ -296,16 +383,22 @@ function randomQ(){
  if(p.length>1)while(same(c,S.cur))c=p[Math.floor(Math.random()*p.length)];
  S.cur=c;S.showInfo=false;S.view='question';nav();
 }
-function catColor(cat){const cats=[...new Set(S.items.map(i=>i.cat))];return PALET[cats.indexOf(cat)%PALET.length]}
+/* Eigen kleur voor de categorie 'Groeivragen': pruim, een kleur uit dezelfde retro-familie die niet gebruikt wordt door de vijf pijlers. */
+const CAT_KLEUR={groeivragen:'#8a4f7d'};
+const specialColor=n=>n?CAT_KLEUR[norm(n)]||null:null;
+function catColor(cat){
+ const sp=specialColor(cat);if(sp)return sp;
+ const pi=pijlerInfoFor(cat);if(pi&&pi.kleur)return pi.kleur;  /* pijlers krijgen hun huisstijlkleur */
+ const cats=[...new Set(S.items.map(i=>i.cat))];return PALET[cats.indexOf(cat)%PALET.length]}
+const subColor=sub=>specialColor(sub)||'var(--ink)';
 function renderQuestion(){
  const q=S.cur,id=qid(q);
  const hist=load().filter(a=>a.id===id).sort((a,b)=>b.date.localeCompare(a.date));
  $('#app').innerHTML=`<div class="card big">
-  <button class="chip link" id="chipC" title="Bekijk alle vragen" style="background:${catColor(q.cat)}">${esc(q.cat)}</button>${q.pil?`<button class="chip link" id="chipP" title="Bekijk alle vragen" style="background:var(--ink)">${esc(q.pil)}</button>`:''}
+  <button class="chip link" id="chipC" title="Bekijk alle vragen" style="background:${catColor(q.cat)}">${esc(q.cat)}</button>${q.pil?`<button class="chip link" id="chipP" title="Bekijk alle vragen" style="background:${subColor(q.pil)}">${esc(q.pil)}</button>`:''}
   <div class="vraag">${esc(q.q)}</div>
-  <button class="btn geel" id="infoBtn">ⓘ Meer over ${esc(S.fw.naam)}</button>
-  ${S.showInfo?`${infoHtml(q.cat)}`:''}
-  ${hist.length?`<h3 style="margin-top:16px">Eerdere antwoorden</h3>${hist.map(h=>`<div class="hist"><small>${fmt(h.date)}</small><div class="ht">${esc(h.answer)}</div></div>`).join('')}`:''}
+  ${infoBlock(q.cat,q.pil)}
+  ${hist.length?`<h3 style="margin-top:16px">Eerdere antwoorden</h3>${hist.map(h=>answerItem(h,{})).join('')}`:''}
   <h3 style="margin-top:16px">${hist.length?'Jouw nieuwe antwoord':'Jouw antwoord'}</h3>
   <textarea id="ans" placeholder="Schrijf hier je reflectie…"></textarea>
   <div id="msg"></div>
@@ -313,15 +406,13 @@ function renderQuestion(){
   <button class="btn alt" id="skipBtn">Overslaan</button>
   <button class="btn alt" id="hideBtn" title="Deze vraag krijg je dan niet meer te zien">🚫 Niet meer tonen</button>
  </div>`;
- document.querySelectorAll('.ht').forEach(t=>{
-  if(t.scrollHeight<=t.clientHeight+1)return;
-  const b=document.createElement('button');b.className='more';b.textContent='Toon meer ▾';
-  b.onclick=()=>{const o=t.classList.toggle('open');b.textContent=o?'Toon minder ▴':'Toon meer ▾'};
-  t.after(b);
- });
+ clampHt($('#app'));wireAnswers($('#app'),rerenderQ);
  $('#chipC').onclick=()=>openList(q.cat,null);
  if($('#chipP'))$('#chipP').onclick=()=>openList(q.cat,q.pil);
- $('#infoBtn').onclick=()=>{const t=$('#ans').value;S.showInfo=!S.showInfo;renderQuestion();$('#ans').value=t};
+ wireInfo(renderQuestion);
+ {const ta=$('#ans'),dr=loadD()[id];
+  if(dr&&dr.t){ta.value=dr.t;$('#msg').innerHTML=`<p class="muted">✎ Concept van ${fmt(dr.d)} hersteld.</p>`}
+  ta.addEventListener('input',()=>setDraft(id,ta.value))}
  $('#skipBtn').onclick=()=>{S.view='after';S.saved=false;S.msg=null;nav()};
  $('#hideBtn').onclick=()=>{
   if(!hide(q)){$('#msg').innerHTML='<p class="err">Verbergen is mislukt (opslag geblokkeerd of vol).</p>';return}
@@ -332,6 +423,7 @@ function renderQuestion(){
   if(!v){$('#msg').innerHTML='<p class="err">Schrijf eerst een antwoord.</p>';return}
   const all=load();all.push({id,framework:S.fw.id,question:q.q,category:q.cat,pillar:q.pil,answer:v,date:new Date().toISOString()});
   if(!save(all)){$('#msg').innerHTML='<p class="err">Opslaan is mislukt (opslag geblokkeerd of vol).</p>';return}
+  setDraft(id,'');beschermOpslag();
   S.saved=true;S.msg=null;S.view='after';nav();
  };
 }
@@ -374,25 +466,74 @@ function renderList(){
  const info=i=>{const a=all.filter(x=>x.id===qid(i)).sort((x,y)=>y.date.localeCompare(x.date));
   return a.length?`✓ ${a.length}× beantwoord · laatst ${new Date(a[0].date).toLocaleDateString('nl-BE')}`:'Nog niet beantwoord'};
  $('#app').innerHTML=`<div class="card big">
-  <button class="chip link" id="lc" style="background:${catColor(f.cat)}">${esc(f.cat)}</button>${f.pil?`<span class="chip" style="background:var(--ink)">${esc(f.pil)}</span>`:''}
+  <button class="chip link" id="lc" style="background:${catColor(f.cat)}">${esc(f.cat)}</button>${f.pil?`<span class="chip" style="background:${subColor(f.pil)}">${esc(f.pil)}</span>`:''}
   <h2>${vis} ${vis===1?'vraag':'vragen'}</h2>
-  <button class="btn geel" id="li">ⓘ Meer over ${esc(S.fw.naam)}</button>
+  ${infoBlock(f.cat,f.pil)}
   ${vis?`<button class="btn" id="lr">🎲 Random vraag hieruit</button>`:''}
-  ${S.showInfo?infoHtml(f.cat):''}
-  ${subs.length?`<h3 style="margin-top:14px">Verfijn per categorie</h3><div class="pick">${subs.map(p=>`<button class="btn" style="background:${catColor(f.cat)}" data-p="${esc(p)}">${esc(p)}</button>`).join('')}</div>`:''}
+  ${subs.length?`<h3 style="margin-top:14px">Verfijn per categorie</h3><div class="pick">${subs.map(p=>`<button class="btn" style="background:${specialColor(p)||catColor(f.cat)}" data-p="${esc(p)}">${esc(p)}</button>`).join('')}</div>`:''}
  </div>
  <div>${items.map((i,n)=>isHidden(i)
   ?`<div class="qitem off">${esc(i.q)}<small>🚫 Verborgen</small><button class="more" data-r="${n}">Terugzetten</button></div>`
   :`<button class="qitem" data-n="${n}">${esc(i.q)}<small>${!f.pil&&i.pil?esc(i.pil)+' · ':''}${info(i)}</small></button>`).join('')}</div>
  ${hid.length?`<button class="btn alt" id="th">${S.showHidden?'Verberg de verborgen vragen':'Toon verborgen vragen ('+hid.length+')'}</button>`:''}`;
  $('#lc').onclick=()=>{if(f.pil)openList(f.cat,null)};
- $('#li').onclick=()=>{S.showInfo=!S.showInfo;renderList()};
+ wireInfo(renderList);
  if($('#lr'))$('#lr').onclick=randomQ;
  if($('#th'))$('#th').onclick=()=>{S.showHidden=!S.showHidden;renderList()};
  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>openList(f.cat,b.dataset.p));
  document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{S.cur=items[+b.dataset.n];S.showInfo=false;S.view='question';nav()});
  document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{unhide(items[+b.dataset.r]);renderList()});
 }
+/* ====== opslag beschermen, concepten en antwoorden aanpassen ====== */
+async function beschermOpslag(){try{if(navigator.storage&&navigator.storage.persist&&!(await navigator.storage.persisted()))await navigator.storage.persist()}catch(e){}}
+async function opslagStatus(){try{if(!(navigator.storage&&navigator.storage.persisted))return'';
+ return (await navigator.storage.persisted())?'🔒 Opslag beschermd tegen automatisch opruimen.':'Opslag niet beschermd: de browser kan hem opruimen bij weinig ruimte. Maak regelmatig een back-up.'}catch(e){return''}}
+const DKEY='reflectie_concepten_v1';
+const loadD=()=>{try{return JSON.parse(localStorage.getItem(DKEY))||{}}catch(e){return{}}};
+function setDraft(id,t){try{const d=loadD();if(t&&t.trim())d[id]={t,d:new Date().toISOString()};else delete d[id];localStorage.setItem(DKEY,JSON.stringify(d))}catch(e){}}
+const akey=a=>a.id+'@@'+a.date;
+function updAnswer(k,fn){const all=load();const i=all.findIndex(a=>akey(a)===k);if(i<0)return false;fn(all,i);return save(all)}
+function clampHt(root){root.querySelectorAll('.ht').forEach(t=>{
+ if(t.scrollHeight<=t.clientHeight+1)return;
+ const b=document.createElement('button');b.className='more';b.textContent='Toon meer ▾';
+ b.onclick=()=>{const o=t.classList.toggle('open');b.textContent=o?'Toon minder ▴':'Toon meer ▾'};
+ t.after(b)})}
+function answerItem(a,opt){
+ const k=akey(a),ed=S.editKey===k,del=S.delKey===k,f=FRAMEWORKS.find(x=>x.id===a.framework);
+ const head=opt.full?`<div class="ahead"><b>${esc(a.question||'(vraag)')}</b>${f?`<span class="chip" style="background:${f.kleur}">${esc(f.naam)}</span>`:''}${a.category?`<span class="chip" style="background:${specialColor(a.category)||'var(--ink)'}">${esc(a.category)}</span>`:''}${a.pillar?`<span class="chip" style="background:${specialColor(a.pillar)||'var(--ink)'}">${esc(a.pillar)}</span>`:''}</div>`:'';
+ return `<div class="hist ans" data-k="${esc(k)}">${head}<small>${fmt(a.date)}${a.edited?' · aangepast '+fmt(a.edited):''}</small>`+
+  (ed?`<textarea class="editta">${esc(a.answer)}</textarea><div class="arow"><button class="btn sm" data-act="save">Opslaan</button><button class="btn alt sm" data-act="cancel">Annuleren</button></div>`
+  :`<div class="ht">${esc(a.answer)}</div><div class="arow">`+(del
+   ?`<span class="no">Dit antwoord verwijderen?</span><button class="btn sm danger" data-act="delyes">Ja, verwijder</button><button class="btn alt sm" data-act="cancel">Nee</button>`
+   :`<button class="more" data-act="edit">✎ Aanpassen</button><button class="more" data-act="del">🗑 Verwijderen</button>`)+`</div>`)+`</div>`}
+function wireAnswers(root,after){root.querySelectorAll('.ans [data-act]').forEach(b=>b.onclick=()=>{
+ const box=b.closest('.ans'),k=box.dataset.k,act=b.dataset.act;
+ const err=t=>{const o=box.querySelector('.aerr');if(o)o.remove();box.insertAdjacentHTML('beforeend',`<p class="err aerr">${t}</p>`)};
+ if(act==='edit'){S.editKey=k;S.delKey=null;after()}
+ else if(act==='del'){S.delKey=k;S.editKey=null;after()}
+ else if(act==='cancel'){S.editKey=S.delKey=null;after()}
+ else if(act==='save'){const ta=box.querySelector('.editta'),v=ta.value.trim();
+  if(!v){ta.classList.add('bad');err('Een antwoord kan niet leeg zijn. Gebruik "Verwijderen" als je het niet wilt bewaren.');return}
+  if(updAnswer(k,(all,i)=>{all[i].answer=v;all[i].edited=new Date().toISOString()})){S.editKey=null;after()}else err('Opslaan is mislukt (opslag geblokkeerd of vol).')}
+ else if(act==='delyes'){if(updAnswer(k,(all,i)=>{all.splice(i,1)})){S.delKey=null;after()}else err('Verwijderen is mislukt (opslag geblokkeerd).')}
+})}
+function rerenderQ(){const t=$('#ans');const v=t?t.value:'';renderQuestion();if($('#ans'))$('#ans').value=v}
+function renderAnswers(){
+ const all=load().sort((a,b)=>b.date.localeCompare(a.date));
+ const fws=FRAMEWORKS.filter(f=>all.some(a=>a.framework===f.id));
+ if(S.af&&!fws.some(f=>f.id===S.af))S.af='';
+ const q=norm(S.aq||'');
+ const list=all.filter(a=>(!S.af||a.framework===S.af)&&(!q||norm([a.question,a.answer,a.category,a.pillar].join(' ')).includes(q)));
+ $('#app').innerHTML=`<div class="card big"><h2>Mijn antwoorden</h2>
+  <p class="muted" style="margin:0 0 4px">${all.length} ${all.length===1?'antwoord':'antwoorden'}, enkel bewaard op dit toestel.</p>
+  ${all.length?`<input id="asearch" type="search" placeholder="Zoek in vragen en antwoorden…" value="${esc(S.aq||'')}" autocomplete="off">
+  ${fws.length>1?`<div class="pick"><button class="btn sm${S.af?' alt':''}" data-f="">Alle kaders</button>${fws.map(f=>`<button class="btn sm${S.af===f.id?'':' alt'}" ${S.af===f.id?`style="background:${f.kleur}"`:''} data-f="${f.id}">${esc(f.naam)}</button>`).join('')}</div>`:''}`:'<p>Je hebt nog geen antwoorden bewaard. Beantwoord een vraag en je vindt ze hier terug.</p>'}</div>
+  <div id="alist">${list.map(a=>`<div class="card" style="padding:12px 16px">${answerItem(a,{full:true})}</div>`).join('')||(all.length?'<p class="muted" style="text-align:center">Geen antwoorden gevonden.</p>':'')}</div>`;
+ clampHt($('#app'));wireAnswers($('#app'),renderAnswers);
+ if($('#asearch'))$('#asearch').oninput=e=>{S.aq=e.target.value;const p=e.target.selectionStart;renderAnswers();const n=$('#asearch');n.focus();try{n.setSelectionRange(p,p)}catch(x){}};
+ document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{S.af=b.dataset.f;renderAnswers()});
+}
+function openAnswers(){if(S.view==='answers')return;S.af='';S.aq='';S.view='answers';nav()}
 /* ====== back-up: exporteren en importeren ====== */
 function backupSummary(){const a=load().length,h=loadH().length;
  return a||h?`Op dit toestel: ${a} ${a===1?'antwoord':'antwoorden'}${h?` en ${h} verborgen ${h===1?'vraag':'vragen'}`:''}.`:'Op dit toestel zijn er nog geen antwoorden bewaard.'}
@@ -421,12 +562,11 @@ function doImport(text){
  const valid=list.filter(a=>a&&typeof a.id==='string'&&typeof a.answer==='string'&&a.answer.trim()&&typeof a.date==='string'&&!isNaN(Date.parse(a.date)));
  const key=a=>a.id+'\u0001'+a.date+'\u0001'+a.answer;
  const cur=load(),have=new Set(cur.map(key));let added=0;
- valid.forEach(a=>{if(!have.has(key(a))){have.add(key(a));cur.push({id:a.id,framework:a.framework||a.id.split('|')[0],question:a.question||a.id.split('|').slice(1).join('|'),category:a.category||'',pillar:a.pillar||'',answer:a.answer,date:a.date});added++}});
+ valid.forEach(a=>{if(!have.has(key(a))){have.add(key(a));cur.push({id:a.id,framework:a.framework||a.id.split('|')[0],question:a.question||a.id.split('|').slice(1).join('|'),category:a.category||'',pillar:a.pillar||'',answer:a.answer,date:a.date,...(typeof a.edited==='string'?{edited:a.edited}:{})});added++}});
  const hs=Array.isArray(d.verborgen)?d.verborgen.filter(x=>typeof x==='string'):[];
  const hcur=loadH(),hset=new Set(hcur);let hadded=0;
  hs.forEach(x=>{if(!hset.has(x)){hset.add(x);hcur.push(x);hadded++}});
- if(!save(cur)||!saveH(hcur)){bkMsg('Opslaan is mislukt (opslag geblokkeerd of vol).',false);return}
- migrate();
+ if(!save(cur)||!saveH(hcur)){bkMsg('Opslaan is mislukt (opslag geblokkeerd of vol).',false);return} 
  const skipped=list.length-valid.length,dup=valid.length-added;
  bkMsg(`Import klaar: ${added} nieuwe ${added===1?'antwoord':'antwoorden'} toegevoegd`+(hadded?`, ${hadded} verborgen ${hadded===1?'vraag':'vragen'} toegevoegd`:'')+(dup?`, ${dup} stonden er al`:'')+(skipped?`, ${skipped} overgeslagen (ongeldig)`:'')+'.',true);
  const sm=$('#menuSum');if(sm)sm.textContent=backupSummary();
@@ -435,11 +575,12 @@ function initMenu(){
  const g=$('#gearBtn'),m=$('#menu'),fi=$('#impFile');
  const close=()=>{m.hidden=true;g.setAttribute('aria-expanded','false')};
  g.onclick=e=>{e.stopPropagation();const open=m.hidden;
-  if(open){$('#bkmsg').innerHTML='';$('#menuSum').textContent=backupSummary()}
+  if(open){$('#bkmsg').innerHTML='';$('#menuSum').textContent=backupSummary();opslagStatus().then(t=>{$('#menuPersist').textContent=t})}
   m.hidden=!open;g.setAttribute('aria-expanded',String(open))};
  m.onclick=e=>e.stopPropagation();
  document.addEventListener('click',close);
  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+ $('#mine').onclick=()=>{close();openAnswers()};
  $('#exp').onclick=doExport;
  $('#unh').onclick=()=>{
   const n=loadH().length;
@@ -454,10 +595,10 @@ function initMenu(){
   $('#bkmsg').innerHTML=`<p class="no">Alle ${a} ${a===1?'antwoord':'antwoorden'} en ${h} verborgen ${h===1?'vraag':'vragen'} op dit toestel worden definitief gewist. Dit kan niet ongedaan gemaakt worden. Exporteer eerst een back-up als je ze wil bewaren.</p><div class="mconf"><button class="nee" id="wno">Annuleren</button><button class="yes" id="wyes">Ja, wis alles</button></div>`;
   $('#wno').onclick=()=>{$('#bkmsg').innerHTML=''};
   $('#wyes').onclick=()=>{
-   try{localStorage.removeItem(KEY);localStorage.removeItem(HKEY)}catch(e){bkMsg('Wissen is mislukt (opslag geblokkeerd).',false);return}
+   try{localStorage.removeItem(KEY);localStorage.removeItem(HKEY);localStorage.removeItem(DKEY)}catch(e){bkMsg('Wissen is mislukt (opslag geblokkeerd).',false);return}
    bkMsg('Alle antwoorden en verborgen vragen zijn gewist.',true);
    $('#menuSum').textContent=backupSummary();
-   if(S.fw&&S.view)render();
+   render();
   };
  };
  $('#imp').onclick=()=>fi.click();
@@ -506,9 +647,9 @@ function drawIcon(size,maskable){
  document.addEventListener('keydown',sluit,{once:true});
  setTimeout(sluit,1000);
 })();
-migrate();
 initMenu();
 render();
+beschermOpslag();
 syncAll();
 setInterval(syncAll,10*60*1000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-lastSync>5*60*1000)syncAll()});
